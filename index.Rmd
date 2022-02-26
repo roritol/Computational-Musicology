@@ -10,11 +10,7 @@ output:
     vertical_layout: fill
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
-
-```{r, include = FALSE}
+```{r setup, include = FALSE}
 library(tidyverse)
 library(spotifyr)
 library(ggthemes)
