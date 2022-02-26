@@ -1,0 +1,218 @@
+---
+title: "Computational Musicology Portfolio"
+author: "Rory Tol"
+date: '2022-02-26'
+output: 
+  flexdashboard::flex_dashboard:
+    storyboard: true
+    theme: yeti
+    orientation: columns
+    vertical_layout: fill
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r setup, include = FALSE}
+library(tidyverse)
+library(spotifyr)
+library(ggthemes)
+library(spotifyr)
+library(compmus)
+```
+
+### Dancability versus Speechiness 
+```{r}
+
+myclientid <- 'd7e2a7e91dc44321ae9ebe078fdf78e6'
+myclientsecret <- '242e54cc07b6432db2ef073328971bbc'
+
+Sys.setenv(SPOTIFY_CLIENT_ID=myclientid)
+Sys.setenv(SPOTIFY_CLIENT_SECRET=myclientsecret)
+
+Netherlands <- get_playlist_audio_features("", "37i9dQZEVXbKCF6dqVpDkS")
+Germany <- get_playlist_audio_features("", "37i9dQZEVXbJiZcmkrIHGU")
+Italy <- get_playlist_audio_features("", "37i9dQZEVXbIQnj7RRhdSX")
+Spain <- get_playlist_audio_features("", "37i9dQZEVXbNFJfN1Vw8d9")
+UK <- get_playlist_audio_features("", "37i9dQZEVXbLnolsZ8PSNw")
+
+
+countrys <-
+  bind_rows(
+    Netherlands %>% mutate(category = "Netherlands"),
+    Germany %>% mutate(category = "Germany"),
+    Italy %>% mutate(category = "Italy"),
+    Spain %>% mutate(category = "Spain")
+  )
+
+
+countrys %>%                    
+  mutate(
+    mode = ifelse(mode == 0, "Minor", "Major")
+  ) %>%
+  ggplot(                     # Set up the plot.
+    aes(
+      x = danceability,
+      y = speechiness,
+      colour = mode
+    )
+  ) +
+  geom_point() +              # Scatter plot.
+  geom_rug(size = 0.1) +      # Add 'fringes' to show data distribution.
+  geom_text(                  # Add text labels from above.
+    aes(
+      x = danceability,
+      y = valence,
+      label = label
+    ),
+    data = 
+      tibble(
+        label = c("", "Speechines"),
+        danceability = c(0.090, 0.123),
+        valence = c(0.101, 0.967)
+      ),
+    colour = "black",         # Override colour (not mode here).
+    size = 3,                 # Override size (not loudness here).
+    hjust = "left",           # Align left side of label with the point.
+    vjust = "bottom",         # Align bottom of label with the point.
+    nudge_x = -0.05,          # Nudge the label slightly left.
+    nudge_y = 0.02            # Nudge the label slightly up.
+  ) +
+  facet_wrap(~category) +     # Separate charts per playlist.
+  scale_x_continuous(         # Fine-tune the x axis.
+    limits = c(0.2, 1),
+    minor_breaks = NULL       # Remove 'minor' grid-lines.
+  ) +
+  scale_y_continuous(         # Fine-tune the y axis in the same way.
+    limits = c(0, 0.6),
+    minor_breaks = NULL
+  ) +
+  theme_minimal() +             # Use a simpler theme.
+  labs(                       # Make the titles nice.
+    x = "Danceability",
+    y = "Speechines",
+    title = "Dancability vs Speechines in european top 50",
+    colour = "Mode"
+  ) 
+
+```
+
+***
+ 
+**Explaining the plot:**
+
+The plot shows 4 top 50 playlist from European countries on the x axis: danceability and on the y axis: Speechiness. Color represents the minor and major scale use per track. I was hoping to find a more obvious relation between the x and y parameters but there are already some interesting findings. For instance, the use of minor scale in Dutch music indicates an increase of speech used in the songs, a similar but slightly weaker correlation is found in the plot of Italy’s top 50. Germany scores higher overall with the amount of speech used in songs whilst Spain has a remarkably dense cluster of danceable music. 
+
+***
+
+### Chromagram
+
+
+```{r}
+amsterdam <-
+  get_tidy_audio_analysis("1YR7VB3xx85Iad2n3soyMb?si=8c889e72e90a4ef8") %>%
+  select(segments) %>%
+  unnest(segments) %>%
+  select(start, duration, pitches)
+
+cayo <-
+  get_tidy_audio_analysis("0Bv7O6fmZk3GrNQFYJaXPn?si=91b4677d1ae348d4") %>%
+  select(segments) %>%
+  unnest(segments) %>%
+  select(start, duration, pitches)
+
+
+bothtracks <-
+  bind_rows(
+    cayo %>% mutate(category = "cayo"),
+    amsterdam %>% mutate(category = "amsterdam")
+  )
+
+bothtracks %>%
+  mutate(pitches = map(pitches, compmus_normalise, "euclidean")) %>%
+  compmus_gather_chroma() %>% 
+  ggplot(
+    aes(
+      x = start + duration / 2,
+      width = duration,
+      y = pitch_class,
+      fill = value
+    )
+  ) +
+  scale_x_continuous(         # Fine-tune the x axis.
+    limits = c(0, 10)
+  ) +
+  geom_tile() +
+  facet_wrap(~category) +
+  labs(x = "Time (s)", y = NULL, fill = "Magnitude", title = "Amsterdam vs Cáyo La Noche",) +
+  theme_minimal() +
+  scale_fill_viridis_c()
+
+```
+
+***
+
+**Explaining the plot:**
+
+We isolate the number one songs of the Dutch and Spanish top 50 playlists: "Amsterdam" and "Cáyo La Noche". Neither song reach a vocal part in the first ten seconds, due to the pitch varying nature of human vocals this leaves a cleaner chromagram to look at. When listening to "Amsterdam" we hear a synthesizer chord struck in an alternating pattern. The g chord is alternated with D# for the first bar and with a D chord in the second bar, this pattern is repeated throughout the song and gives off a strong minor key vibe due to the semitone distance between D and D#. The pattern is broken in the third bar for the singer to introduce his name, the instruments drop and only vocals are heard for 2 seconds. This is hard for the chromagram to visualize, therefore a stripe of activation is observed throughout the whole spectrum. Immediately after the vocals a dubble woodblock click reintroduces the beat, we can see the woodblock is C#. 
+
+The song "Cáyo La Noche" starts with piano chords C D# D. We can see the chords drawn out in the chromagram with the root nodes as brightest. Due to a vocalist the second half of the chromagram is murky. Also note that the two songs are coincidentally in the same key (look at the semitone difference between G G# and D D#). This raises the question is the C minor scale popular in all top 50 tracks? 
+
+***
+
+
+
+
+### Dynamic Time Warping
+
+```{r}
+cayo_origional <-
+  get_tidy_audio_analysis("24nhUPco9SUepcC2LS8C3L?si=7a3f8e475b92458e") %>%
+  select(segments) %>%
+  unnest(segments) %>%
+  select(start, duration, pitches)
+
+cayo2 <-
+  get_tidy_audio_analysis("2jeDtqfRAGJb9McjwfXN9I?si=3008e3d282bd4fd8") %>%
+  select(segments) %>%
+  unnest(segments) %>%
+  select(start, duration, pitches)
+
+
+compmus_long_distance(
+  cayo_origional  %>% mutate(pitches = map(pitches, compmus_normalise, "chebyshev")),
+  cayo2 %>% mutate(pitches = map(pitches, compmus_normalise, "chebyshev")),
+  feature = pitches,
+  method = "euclidean"
+) %>%
+  ggplot(
+    aes(
+      x = xstart + xduration / 2,
+      width = xduration,
+      y = ystart + yduration / 2,
+      height = yduration,
+      fill = d
+    )
+  ) +
+  geom_tile() +
+  scale_x_continuous(         # Fine-tune the x axis.
+    limits = c(0, 20),
+  ) +
+  scale_y_continuous(         # Fine-tune the y axis in the same way.
+    limits = c(0, 20),
+  ) +
+  coord_equal() +
+  labs(x = "Cayo De La Nocheh - Remix", y = "Cayo De La Noche") +
+  theme_minimal() +
+  scale_fill_viridis_c(guide = NULL)
+```
+
+***
+**Explaining the plot:**
+
+The number one song in the Spanish top 50 is one of many remixes. In the plot we see the original "Cayo De La Noche" ploted against one of the remixes called "Cayo De La Nocheh". I've isolated the first 20 seconds for clarity. We can see the first piano chords clearly in the bottom left and can immediately tell the remix is a faster pace than the original. This leads the diagonal line (where the two songs meet) to be steep. Also the remix holds less speech than the original leaving the darker gaps along the Y axes. 
+
+***
+
+
