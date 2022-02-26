@@ -199,7 +199,7 @@ compmus_long_distance(
     limits = c(0, 20),
   ) +
   coord_equal() +
-  labs(x = "Cayo De La Nocheh - Remix", y = "Cayo De La Noche") +
+  labs(x = "Cayo De La Nocheh - Remix", y = "Cayo De La Noche", title="Cayo De La Noche: Origional vs Remix") +
   theme_minimal() +
   scale_fill_viridis_c(guide = NULL)
 ```
