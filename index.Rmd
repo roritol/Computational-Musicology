@@ -2,12 +2,14 @@
 title: "Computational Musicology Portfolio"
 author: "Rory Tol"
 date: '2022-02-26'
-output: 
+output:
   flexdashboard::flex_dashboard:
-    storyboard: true
-    theme: yeti
+    logo: /Users/rori/Documents/UVA_3/Comp_Music/Computational-Musicology/logo.png
     orientation: columns
     vertical_layout: fill
+    css: /Users/rori/Documents/UVA_3/Comp_Music/Computational-Musicology/Style.css
+    theme: flatly
+    
 ---
 
 ```{r setup, include = FALSE}
@@ -16,17 +18,320 @@ library(spotifyr)
 library(ggthemes)
 library(spotifyr)
 library(compmus)
-```
-
-### Dancability versus Speechiness 
-```{r}
+library(patchwork)
+library(thematic)
+library(shiny)
 
 myclientid <- 'd7e2a7e91dc44321ae9ebe078fdf78e6'
 myclientsecret <- '242e54cc07b6432db2ef073328971bbc'
 
 Sys.setenv(SPOTIFY_CLIENT_ID=myclientid)
 Sys.setenv(SPOTIFY_CLIENT_SECRET=myclientsecret)
+```
 
+
+Week 9 {.storyboard}
+==============================
+### The Structure of Pop Music  {data-commentary-width=400}
+
+
+```{r}
+
+n1 <- get_tidy_audio_analysis("1YR7VB3xx85Iad2n3soyMb?si=1258f9bb8c124a29") %>%
+  compmus_align(sections, segments) %>%                     # Change `bars`
+  select(sections) %>%                                      #   in all three
+  unnest(sections) %>%                                      #   of these lines.
+  mutate(
+    pitches =
+      map(segments,
+          compmus_summarise, pitches,
+          method = "rms", norm = "euclidean"              # Change summary & norm.
+      )
+  ) %>%
+  mutate(
+    timbre =
+      map(segments,
+          compmus_summarise, timbre,
+          method = "rms", norm = "euclidean"              # Change summary & norm.
+      )
+  )
+
+n1 <-n1 %>%
+  compmus_self_similarity(timbre, "euclidean") %>% 
+  ggplot(
+    aes(
+      x = xstart + xduration / 2,
+      width = xduration,
+      y = ystart + yduration / 2,
+      height = yduration,
+      fill = d
+    )
+  ) +
+  geom_tile() +
+  coord_fixed() +
+  scale_fill_viridis_c(guide = "none", option = "inferno") +
+  theme_classic() +
+  theme(plot.title = element_text(size = 5), 
+        axis.title = element_text(size = 4),
+        axis.text = element_text(size = 7)
+        )+
+  labs(x = "Time (s)", y = NULL, fill = "Magnitude", title = "#1: Amsterdam - $hirak",)
+
+annotation <- data.frame(
+   x = c(95,138),
+   y = c(95,138),
+   label = c("Bridge", "Bridge")
+   )
+
+n1 <- n1 + geom_text(data=annotation, aes( x=x, y=y, label=label),
+           color="white", inherit.aes = FALSE,
+           size=2 , angle=0, fontface="bold" )
+
+n2 <- get_tidy_audio_analysis("6lgIi3ixBsr4cMt3r19yX9?si=ca328253debf4848") %>%
+  compmus_align(sections, segments) %>%                     # Change `bars`
+  select(sections) %>%                                      #   in all three
+  unnest(sections) %>%                                      #   of these lines.
+  mutate(
+    pitches =
+      map(segments,
+          compmus_summarise, pitches,
+          method = "rms", norm = "euclidean"              # Change summary & norm.
+      )
+  ) %>%
+  mutate(
+    timbre =
+      map(segments,
+          compmus_summarise, timbre,
+          method = "rms", norm = "euclidean"              # Change summary & norm.
+      )
+  )
+
+n2 <-n2 %>%
+  compmus_self_similarity(timbre, "euclidean") %>% 
+  ggplot(
+    aes(
+      x = xstart + xduration / 2,
+      width = xduration,
+      y = ystart + yduration / 2,
+      height = yduration,
+      fill = d
+    )
+  ) +
+  geom_tile() +
+  coord_fixed() +
+  scale_fill_viridis_c(guide = "none", option = "inferno") +
+  theme_classic() +
+  theme(plot.title = element_text(size = 5), 
+        axis.title = element_text(size = 4),
+        axis.text = element_text(size = 7)
+        )+
+  labs(x = "Time (s)", y = NULL, fill = "Magnitude", title = "#2: Dat Heb Jij Gedaan - MEAU",)
+
+n3 <- get_tidy_audio_analysis("63JrADDfrcjOaI6lyVkN3c?si=c79a65ca3f3d421e") %>%
+  compmus_align(sections, segments) %>%                     # Change `bars`
+  select(sections) %>%                                      #   in all three
+  unnest(sections) %>%                                      #   of these lines.
+  mutate(
+    pitches =
+      map(segments,
+          compmus_summarise, pitches,
+          method = "rms", norm = "euclidean"              # Change summary & norm.
+      )
+  ) %>%
+  mutate(
+    timbre =
+      map(segments,
+          compmus_summarise, timbre,
+          method = "rms", norm = "euclidean"              # Change summary & norm.
+      )
+  )
+
+n3 <-n3 %>%
+  compmus_self_similarity(timbre, "euclidean") %>% 
+  ggplot(
+    aes(
+      x = xstart + xduration / 2,
+      width = xduration,
+      y = ystart + yduration / 2,
+      height = yduration,
+      fill = d
+    )
+  ) +
+  geom_tile() +
+  coord_fixed() +
+  scale_fill_viridis_c(guide = "none", option = "inferno") +
+  theme_classic() +
+  theme(plot.title = element_text(size = 5), 
+        axis.title = element_text(size = 4),
+        axis.text = element_text(size = 7)
+        )+
+  labs(x = "Time (s)", y = NULL, fill = "Magnitude", title = "#3: Vluchtstrook - Kriss Kross Amsterdam",)
+
+n4 <- get_tidy_audio_analysis("3mafhqH8nGsvyZTN86IEOc?si=d68602bc50564294") %>%
+  compmus_align(sections, segments) %>%                     # Change `bars`
+  select(sections) %>%                                      #   in all three
+  unnest(sections) %>%                                      #   of these lines.
+  mutate(
+    pitches =
+      map(segments,
+          compmus_summarise, pitches,
+          method = "rms", norm = "euclidean"              # Change summary & norm.
+      )
+  ) %>%
+  mutate(
+    timbre =
+      map(segments,
+          compmus_summarise, timbre,
+          method = "rms", norm = "euclidean"              # Change summary & norm.
+      )
+  )
+
+n4 <- n4 %>%
+  compmus_self_similarity(timbre, "euclidean") %>% 
+  ggplot(
+    aes(
+      x = xstart + xduration / 2,
+      width = xduration,
+      y = ystart + yduration / 2,
+      height = yduration,
+      fill = d
+    )
+  ) +
+  geom_tile() +
+  coord_fixed() +
+  scale_fill_viridis_c(guide = "none", option = "inferno") +
+  theme_classic() +
+  theme(plot.title = element_text(size = 5), 
+        axis.title = element_text(size = 4),
+        axis.text = element_text(size = 7)
+        )+
+  labs(x = "Time (s)", y = NULL, fill = "Magnitude", title = "#4: Je Blik Richting Mij - Bankzitters")
+
+combined <- n1 + n2 + n3 + n4
+
+
+combined + plot_annotation(title = 'Timbre Self-Similarity Martrix of Dutch Top 4')
+```
+
+
+***
+
+**Explaining the plot:** 
+
+We see the self similarity matrix of the top four songs in the Dutch top 50 playlist on Spotify. Via Timbre we can compare the structure of the songs internally and find the sections that stand out the most. Also we can compare the four songs among each other. 
+
+**The black squares (structure)**
+
+A typical structure for a pop song is as follows: 
+intro, verse — chorus — verse — chorus — bridge — chorus, outro 
+
+If we look at the timbre based self-similarity matrices displayed in the plot we can make out the structure of the song along the black squares that form where the x and y axes meet. A larger black square means that part of the song (intro, chorus, verse, etc.) was consistent for a larger portion. This explains why the black squares are proportionate to each other as they are musically expressed as a multitude of "bars". For instance, in the Number 1 hit "Amsterdam", the into is 1 bar followed by a 4 bar chorus. As seen in the plot the black square representing the intro is 4 times smaller than the next.
+
+**The brightest squares (the outliers)** 
+
+Now that we have a way of interpreting the structure, lets take a look at the brightest squares. These indicate the magnitude with which the timbre differs from that particular part of the song to other parts of the song. If you take a glance at all four of the plots you might notice that all plots read the highest difference in timbre between the intro and the bridge. This can be explained by listening to the songs, the intro of all four songs is a toned down version of the verse or chorus. With toned down I mean elements are missing: the beat, the vocals or the chords. These elements are introduced after the intro creating a change in timbre. Now lets look at the bridge, recognizable in the plot by its presence as a cross in the top right of each matrix. The bridge functions as a structural change in the song, and is defined by the means to provide contrast. Therefore it isn't strange that the bridge is often the most outstanding structure. Notably, the highest contrast in three of the songs is found between the bridge and the intro. The only exeption is: "Je Blik Richting Mij", where the intro is obviously the most outstanding structure and the bridge seems to bear the closest resemblance to the intro. Another notable outlier is the song "Amsterdam" where there seems to be two bridges. The two outliers are plotted in a chroma self-similarity matrix on the next page so we can take a closer look at the pitch information to see if we can find a reason for their divergence.  
+
+
+
+
+***
+
+### Can We Eleborate Structures With the Chromagram? 
+
+***
+ 
+**Explaining the plot:**
+
+If we look at the chromagram of both songs, it immediately becomes clear that there is a lot of repetition. 
+
+***
+
+#### Plot1
+```{r}
+amsterdam <- get_tidy_audio_analysis("1YR7VB3xx85Iad2n3soyMb?si=8c889e72e90a4ef8") %>%
+  select(segments) %>%
+  unnest(segments) %>%
+  select(start, duration, pitches)
+
+annotation <- data.frame(
+   x = c(95,138),
+   y = c(95,138),
+   label = c("Bridge", "Bridge")
+   )
+
+
+
+amsterdam <- compmus_long_distance(
+  amsterdam %>% mutate(pitches = map(pitches, compmus_normalise, "chebyshev")),
+  amsterdam %>% mutate(pitches = map(pitches, compmus_normalise, "chebyshev")),
+  feature = pitches,
+  method = "euclidean"
+) %>%
+  ggplot(
+    aes(
+      x = xstart + xduration / 2,
+      width = xduration,
+      y = ystart + yduration / 2,
+      height = yduration,
+      fill = d
+    )
+  ) +
+  geom_tile() +
+  coord_equal() +
+  labs(x = NULL, y = NULL, title= "Amsterdam - $hirak") +
+  theme_minimal() +
+  scale_fill_viridis_c(guide = "none", option = "inferno")
+
+amsterdam <- amsterdam + geom_text(data=annotation, aes( x=x, y=y, label=label),
+           color="white", inherit.aes = FALSE,
+           size=2 , angle=0, fontface="bold" )
+
+
+amsterdam
+
+
+
+```
+
+
+#### plot 2
+
+```{r}
+jeblik <- get_tidy_audio_analysis("3mafhqH8nGsvyZTN86IEOc?si=d68602bc50564294") %>%
+  select(segments) %>%
+  unnest(segments) %>%
+  select(start, duration, pitches)
+
+jeblik <- compmus_long_distance(
+  jeblik %>% mutate(pitches = map(pitches, compmus_normalise, "chebyshev")),
+  jeblik %>% mutate(pitches = map(pitches, compmus_normalise, "chebyshev")),
+  feature = pitches,
+  method = "euclidean"
+) %>%
+  ggplot(
+    aes(
+      x = xstart + xduration / 2,
+      width = xduration,
+      y = ystart + yduration / 2,
+      height = yduration,
+      fill = d
+    )
+  ) +
+  geom_tile() +
+  coord_equal() +
+  labs(x = NULL, y = NULL, title= "Je Blik Richting Mij") +
+  theme_minimal() +
+  scale_fill_viridis_c(guide = "none", option = "inferno")
+
+jeblik
+```
+
+
+Previous Weeks {.storyboard}
+======================
+
+### Dancability versus Speechiness 
+```{r}
 Netherlands <- get_playlist_audio_features("", "37i9dQZEVXbKCF6dqVpDkS")
 Germany <- get_playlist_audio_features("", "37i9dQZEVXbJiZcmkrIHGU")
 Italy <- get_playlist_audio_features("", "37i9dQZEVXbIQnj7RRhdSX")
