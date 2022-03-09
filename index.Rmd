@@ -8,11 +8,7 @@ output:
     orientation: columns
     vertical_layout: fill
     css: /Users/rori/Documents/UVA_3/Comp_Music/Computational-Musicology/Style.css
-<<<<<<< HEAD
-    theme: flatly
-=======
->>>>>>> 61858cc26c97c33ab83308d390bc3e2791daa40e
-    
+    theme: flatly   
 ---
 
 ```{r setup, include = FALSE}
@@ -33,15 +29,9 @@ Sys.setenv(SPOTIFY_CLIENT_SECRET=myclientsecret)
 ```
 
 
-<<<<<<< HEAD
-Week 9 {.storyboard}
-==============================
-### The Structure of Pop Music  {data-commentary-width=400}
-=======
 Week 10 {.storyboard}
 ==============================
 ### The structure of pop music  {data-commentary-width=400}
->>>>>>> 61858cc26c97c33ab83308d390bc3e2791daa40e
 
 
 ```{r}
@@ -154,7 +144,6 @@ n3 <- get_tidy_audio_analysis("63JrADDfrcjOaI6lyVkN3c?si=c79a65ca3f3d421e") %>%
           method = "rms", norm = "euclidean"              # Change summary & norm.
       )
   )
-<<<<<<< HEAD
 
 n3 <-n3 %>%
   compmus_self_similarity(timbre, "euclidean") %>% 
@@ -243,128 +232,22 @@ Now that we have a way of interpreting the structure, lets take a look at the br
 
 
 
-
 ***
 
 ### Can We Eleborate Structures With the Chromagram? 
 
-***
- 
-**Explaining the plot:**
-
-If we look at the chromagram of both songs, it immediately becomes clear that there is a lot of repetition. 
-
-***
-
 #### Plot1
-=======
-
-n3 <-n3 %>%
-  compmus_self_similarity(timbre, "euclidean") %>% 
-  ggplot(
-    aes(
-      x = xstart + xduration / 2,
-      width = xduration,
-      y = ystart + yduration / 2,
-      height = yduration,
-      fill = d
-    )
-  ) +
-  geom_tile() +
-  coord_fixed() +
-  scale_fill_viridis_c(guide = "none", option = "inferno") +
-  theme_classic() +
-  theme(plot.title = element_text(size = 5), 
-        axis.title = element_text(size = 4),
-        axis.text = element_text(size = 7)
-        )+
-  labs(x = "Time (s)", y = NULL, fill = "Magnitude", title = "#3: Vluchtstrook - Kriss Kross Amsterdam",)
-
-n4 <- get_tidy_audio_analysis("3mafhqH8nGsvyZTN86IEOc?si=d68602bc50564294") %>%
-  compmus_align(sections, segments) %>%                     # Change `bars`
-  select(sections) %>%                                      #   in all three
-  unnest(sections) %>%                                      #   of these lines.
-  mutate(
-    pitches =
-      map(segments,
-          compmus_summarise, pitches,
-          method = "rms", norm = "euclidean"              # Change summary & norm.
-      )
-  ) %>%
-  mutate(
-    timbre =
-      map(segments,
-          compmus_summarise, timbre,
-          method = "rms", norm = "euclidean"              # Change summary & norm.
-      )
-  )
-
-n4 <- n4 %>%
-  compmus_self_similarity(timbre, "euclidean") %>% 
-  ggplot(
-    aes(
-      x = xstart + xduration / 2,
-      width = xduration,
-      y = ystart + yduration / 2,
-      height = yduration,
-      fill = d
-    )
-  ) +
-  geom_tile() +
-  coord_fixed() +
-  scale_fill_viridis_c(guide = "none", option = "inferno") +
-  theme_classic() +
-  theme(plot.title = element_text(size = 5), 
-        axis.title = element_text(size = 4),
-        axis.text = element_text(size = 7)
-        )+
-  labs(x = "Time (s)", y = NULL, fill = "Magnitude", title = "#4: Je Blik Richting Mij - Bankzitters")
-
-combined <- n1 + n2 + n3 + n4
-
-
-combined + plot_annotation(title = 'Timbre Self-Similarity Martrix of Dutch Top 4')
-```
-
-
-***
-
-**Explaining the plot:** 
-
-We see the self similarity matrix of the top four songs in the Dutch top 50 playlist on Spotify. Via Timbre we can compare the structure of the songs internally and find the sections that stand out the most. Also we can compare the four songs among each other. 
-
-A typical structure for a pop song is as follows: 
-intro, verse — chorus — verse — chorus — bridge — chorus, outro 
-
-If we look at the timbre based self-similarity matrices displayed in the plot we can make out the structure of the song along the black squares that form where the x and y axes meet. A larger black square means that part of the song (intro, chorus, verse, etc.) was consistent for a larger portion. This explains why the black squares are proportionate to each other as they are musically expressed as a multitude of "bars". 
-
-
-
-
-***
-
-### Can we find the same structures with the pitch? 
-
->>>>>>> 61858cc26c97c33ab83308d390bc3e2791daa40e
 ```{r}
 amsterdam <- get_tidy_audio_analysis("1YR7VB3xx85Iad2n3soyMb?si=8c889e72e90a4ef8") %>%
   select(segments) %>%
   unnest(segments) %>%
   select(start, duration, pitches)
-
-<<<<<<< HEAD
 annotation <- data.frame(
    x = c(95,138),
    y = c(95,138),
    label = c("Bridge", "Bridge")
    )
-
-
-
 amsterdam <- compmus_long_distance(
-=======
-compmus_long_distance(
->>>>>>> 61858cc26c97c33ab83308d390bc3e2791daa40e
   amsterdam %>% mutate(pitches = map(pitches, compmus_normalise, "chebyshev")),
   amsterdam %>% mutate(pitches = map(pitches, compmus_normalise, "chebyshev")),
   feature = pitches,
@@ -381,20 +264,13 @@ compmus_long_distance(
   ) +
   geom_tile() +
   coord_equal() +
-<<<<<<< HEAD
   labs(x = NULL, y = NULL, title= "Amsterdam - $hirak") +
   theme_minimal() +
   scale_fill_viridis_c(guide = "none", option = "inferno")
-
 amsterdam <- amsterdam + geom_text(data=annotation, aes( x=x, y=y, label=label),
            color="white", inherit.aes = FALSE,
            size=2 , angle=0, fontface="bold" )
-
-
 amsterdam
-
-
-
 ```
 
 
@@ -405,7 +281,6 @@ jeblik <- get_tidy_audio_analysis("3mafhqH8nGsvyZTN86IEOc?si=d68602bc50564294") 
   select(segments) %>%
   unnest(segments) %>%
   select(start, duration, pitches)
-
 jeblik <- compmus_long_distance(
   jeblik %>% mutate(pitches = map(pitches, compmus_normalise, "chebyshev")),
   jeblik %>% mutate(pitches = map(pitches, compmus_normalise, "chebyshev")),
@@ -426,26 +301,16 @@ jeblik <- compmus_long_distance(
   labs(x = NULL, y = NULL, title= "Je Blik Richting Mij") +
   theme_minimal() +
   scale_fill_viridis_c(guide = "none", option = "inferno")
-
 jeblik
 ```
 
-=======
-  labs(x = NULL, y = NULL, title= "Self-smilarity chroma: Amsterdam - $hirak") +
-  theme_minimal() +
-  scale_fill_viridis_c(guide = "none", option = "inferno")
-  
-
-```
-
 ***
- 
+
 **Explaining the plot:**
 
-
+If we look at the chromagram of both songs, it immediately becomes clear that there is a lot of repetition. 
 
 ***
->>>>>>> 61858cc26c97c33ab83308d390bc3e2791daa40e
 
 Previous Weeks {.storyboard}
 ======================
