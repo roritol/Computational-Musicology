@@ -147,11 +147,13 @@ twenty_five %>%
   theme_minimal() +
   labs(x = "Time (s)", y = "", Title = "Amsterdam - $hirac")
 ```
+
 ***
 
 I've decided to find a new corpus as i'm finding it harder and harder to get a single story across my research. So im making my own two playlists on spotify containing covers used in movie trailers and their original. I will have to redo my previous research so for this week i've done minimal work on the assignment for Week 10 but i've done some work on creating the new corpus instead.
 
 ***
+
 Week 9 {.storyboard}
 ==============================
 ### The structure of pop music  {data-commentary-width=400}
