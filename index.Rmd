@@ -1,0 +1,464 @@
+
+---
+title: "Computational Musicology Portfolio"
+author: "Rory Tol"
+date: '2022-02-26'
+output:
+  flexdashboard::flex_dashboard:
+    logo: /Users/rori/Documents/UVA_3/Comp_Music/Computational-Musicology/logo.png
+    orientation: columns
+    vertical_layout: fill
+    # css: /Users/rori/Documents/UVA_3/Comp_Music/Computational-Musicology/Style.css
+    theme: flatly
+    self_contained: false
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(spotifyr)
+library(ggthemes)
+library(compmus)
+library(patchwork)
+library(thematic)
+library(shiny)
+library(plotly) 
+library(ggpp) 
+
+myclientid <- 'd7e2a7e91dc44321ae9ebe078fdf78e6'
+myclientsecret <- '242e54cc07b6432db2ef073328971bbc'
+
+Sys.setenv(SPOTIFY_CLIENT_ID=myclientid)
+Sys.setenv(SPOTIFY_CLIENT_SECRET=myclientsecret)
+```
+
+```{r get the audio features of the playlists, include=FALSE}
+# Movie trailer covers - originals = 56quBtqjxzHDuphoB8GdP0?si=4f99dbd07e3c42de
+# Movie trailer cover = 4sonZikgqtbefZyJy9mMl0?si=0c89c8abbfb14dd2
+
+originals <-
+  get_playlist_audio_features("Movie Trailer Covers - Originals",
+    "56quBtqjxzHDuphoB8GdP0?si=4f99dbd07e3c42de"
+  ) %>%
+  add_audio_analysis()
+
+covers <-
+  get_playlist_audio_features("Movie Trailer Covers",
+    "4sonZikgqtbefZyJy9mMl0?si=0c89c8abbfb14dd2"
+  ) %>%
+  add_audio_analysis()
+
+```
+
+```{r create combined dataframe, include=FALSE}
+songnames <- c("Black Hole Sun",
+               "Something In The Way",                                             
+               "I've Got No Strings",                                              
+               "Crazy",                                                            
+               "Creep",                                                            
+               "Crazy In Love",                                     
+               "Survivor",                                                         
+               "Once Upon a Dream",
+               "I'd Love to Change the World",                     
+               "Paint It, Black",                                                  
+               "Born To Be Wild",                                                  
+               "Don't Panic",                                                      
+               "I Started A Joke",                                                 
+               "Sweet Dreams (Are Made of This)",                                  
+               "The Times They Are A-Changin'",                                    
+               "Back To Black",                                                    
+               "Wicked Game",                                                      
+               "Enjoy the Silence",                                                
+               "Never Tear Us Apart",                                              
+               "Smells Like Teen Spirit",                                          
+               "Come Together",                                  
+               "Wonderwall",                                                       
+               "Everybody Wants To Rule The World",                                
+               "Forever Young",                                                    
+               "Do You Realize??",                                                 
+               "California Dreamin",                             
+               "Heroes")
+
+# R add column before another column
+covers_withid <- covers %>%
+  add_column(id = songnames,
+             .before = "playlist_id")
+
+originals_withid <- originals %>%
+  add_column(id = songnames,
+             .before = "playlist_id")
+
+combined <-
+  bind_rows(originals_withid %>% mutate(kind = "Original"),
+            covers_withid %>% mutate(kind = "Movie Trailer Cover"))
+            
+
+```
+
+Intro {}
+==============================
+
+Column {.tabset}
+-----------------------------------------------------------------------
+
+
+
+#### Trailercore is a well known phenomenon in the film industry...
+
+These are my hand crafted playlists:
+
+<iframe src="https://open.spotify.com/embed/playlist/56quBtqjxzHDuphoB8GdP0?utm_source=generator&theme=0" width="100%" height="380" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
+
+<iframe src="https://open.spotify.com/embed/playlist/4sonZikgqtbefZyJy9mMl0?utm_source=generator&theme=0" width="100%" height="380" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
+
+** THIS TEXT IS NOT MINE I STILL HAVE TO RE WRITE IT**
+
+Anyone who’s watched a trailer for basically any genre of movie over the past 10 years or so — from horror and action to serious dramas — has probably encountered the “trailercore” phenomenon. Basically, it’s when a movie trailer uses a cover version of a familiar song that’s been slowed down and stripped back, with added emotional emphasis to the lyrics, usually overlaying them with darker meaning. Oh, and the song is usually a nauseatingly on-the-nose match for some basic idea in the movie’s premise: Pink Floyd’s “Eclipse” in the Dune trailer, “I’ve Got No Strings” for Avengers: Age of Ultron, “Crazy” in the Birdman trailer, or “I Started a Joke” for Suicide Squad, to name just a handful. Usually, the trailer starts off with a score that builds up to the drop of the song, where viewers are meant to make the connection and experience a moment of shock and awe. But after a decade of this technique, it’s become harder to get that kind of strong reaction. There’s an art to trailercore, and not all trailers are made equally.
+
+Slowing down popular songs for dramatic effect in trailers has been an occasional gimmick for decades, especially in video game trailers, like the 2001 Gears of War trailer built around “Mad World”. But the idea solidified into a trend with The Social Network trailer that used a creepy version of Radiohead’s “Creep” by Belgian choir Scala & Kolacny Brothers to suggest how it was going to address Mark Zuckerberg’s rise to power. Trailer editor Mark Woollen created the ad before any of the Oscar-winning score was finished, and in an interview with The New Yorker, he revealed that he used a 2001 cover of the song he had stashed on an old hard drive. That trailer radically influenced the sound of movie trailers for the next decade.
+
+Tempo {.storyboard}
+======================
+
+### Are movie trailer songs more sad then their original? {data-commentary-width=400}
+
+```{r Tempo versus Valence}
+
+combined_tempo <- combined %>%
+  mutate(
+    sections =
+      map(
+        sections,                                    # sections or segments
+        summarise_at,
+        vars(tempo, loudness, duration),             # features of interest
+        list(section_mean = mean, section_sd = sd)   # aggregation functions
+      )
+  ) %>% unnest(sections) 
+
+
+combined_tempo %>% ggplot(
+    aes(
+      x = valence,
+      y = tempo,
+      colour = kind,
+      alpha = loudness
+    )
+  ) +
+  geom_point(aes(size = duration / 60)) +
+  geom_rug() +
+  theme_minimal() +
+  #ylim(0, 5) +
+  labs(
+    x = "Valence",
+    y = "Mean Tempo (bpm)",
+    colour = "Song Type",
+    size = "Duration (min)",
+    alpha = "Volume (dBFS)",
+    title = "Exploring Tempo and Valence in the Playlists"
+  )
+
+```
+
+***
+
+**What is valence?**
+The Spotify API gives a few audio features that describe certain aspects of the songs (e.g. speechiness, acousticness, instrumentalness etc.), one of these parameters is "valence" and describes a "musical positiveness" according to the Spotify API webpage. A track with a high valence would be labeled as happy or euphoric whilst tracks with low valence would be labeled as sad or angry. The exact workings of the valence audio features is not described by Spotify. 
+
+**Examining the plot**
+The description of trailercore music often describes the covers to be a slower, sadder version of its original. To test this description, I've plotted the average tempo in BPM on the y-axis and the valence calculated by the Spotify API on the x-axis for both the cover playlist as the playlist containing the original songs. We can see from the plot that the valence of the cover songs has quite drastically decreased for the playlist containing covers (red). The tempo on the other hand, only shows a very slight difference. 
+
+Great! We have established that there is a significant decrease in valence. But since Spotify doesn't tell us what it bases valence on, there is little to be said about the exact differences between the two playlists. For all I know tempo is already taken into account when calculating valence. Therefore, I'll continue looking for specific musical differences that account for the increased sadness in the cover songs. First, lets take a closer look at the Tempo, something seems off. 
+
+**how do I include calculations in the text again?**
+
+
+```{r daceability versus speechines copy}
+#speechiness
+#acousticness
+#instrumentalness
+#liveness
+#valence
+#tempo
+#track.duration_ms
+#track.popularity
+#track.album.release_date
+
+#key_name
+#mode_name
+#key_mode (both key and mode)
+#duration
+#end_of_fade_in
+#tempo_confidence
+#time_signature_confidence
+#key_confidence
+#mode_confidence
+
+#bars
+#beats
+#tatums
+#sections
+#segments
+
+# combined %>%                    
+#   mutate(
+#     mode = ifelse(mode == 0, "Minor", "Major")
+#   ) %>%
+#   ggplot(                     # Set up the plot.
+#     aes(
+#       x = valence,
+#       y = speechiness,
+#       colour = mode
+#     )
+#   ) +
+#   geom_point() +              # Scatter plot.
+#   geom_rug(size = 0.1) +      # Add 'fringes' to show data distribution.
+#   facet_wrap(~fct_rev(kind)) +     # Separate charts per playlist.
+#   scale_x_continuous(         # Fine-tune the x axis.
+#     limits = c(0, 1),
+#     minor_breaks = NULL       # Remove 'minor' grid-lines.
+#   ) +
+#   scale_y_continuous(         # Fine-tune the y axis in the same way.
+#     # limits = c(0, 1),
+#     minor_breaks = NULL
+#   ) +
+#   theme_minimal() +             # Use a simpler theme.
+#   labs(                       # Make the titles nice.
+#     # x = "Danceability",
+#     # y = "Speechines",
+#     title = "Dancability vs Speechines in european top 50",
+#     colour = "Mode"
+#   )
+
+```
+
+```{r tempo summary, include=FALSE}
+conf_tempo <- select(combined, id, tempo, tempo_confidence, kind)
+summary(conf_tempo)
+```
+
+### The change of tempo
+```{r violin plot tempo wrong}
+library(ggstatsplot)
+library(ggrepel)
+library(ggpmisc)
+
+
+# Manual funtion to make a collumn with outliers
+# is_outlier <- function(x) {
+#   return(x < 75 | x > 150)
+# }
+# 
+# combined_outliers <- combined %>% mutate(tempo_outlier = if_else(is_outlier(tempo), id, NA_character_))
+
+
+violin1 <- ggwithinstats(
+  data = combined, x = kind, y = tempo,
+  results.subtitle =FALSE, 
+  outlier.tagging = TRUE,
+  outlier.label = id,
+  outlier.coef = 0.9,
+  grouping.var = outlier,
+  centrality.path = FALSE,
+  point.path = TRUE,
+  point.path.args = aes(alpha = 0.15, linetype = "dashed"),
+  messages = FALSE) +
+  labs(
+    x = "Song Type",
+    y = "Tempo (BPM)",
+    title = "Tempo analisys of movie trailer covers",
+    subtitle = "",
+    caption = ""
+  ) + scale_x_discrete(limits = c("Original", "Movie Trailer Cover"))
+
+
+
+violin1
+```
+
+***
+
+**What is Tempo?**
+Tempo as a musical parameter in the spotify API contains the overall estimated tempo of a track in beats per minute (BPM). In musical terminology, tempo is the speed or pace of a given piece and derives directly from the average beat duration.
+
+**Examining the plot**
+Like the previous plot showed us, the average tempo of the the two playlists is very similar. However we can tell that many of the songs have not stayed on the same BPM after they were covered, by looking at the spread of dots along the y-axis or by following the dotted lines (going from original to cover). Counting the occurrences of near horizontal lines I conclude that very few of the songs have stayed on the same average BPM. Rather, some of the songs have drastically increased tempo and some have drastically decreased tempo, resulting in the same average. This doesn't seem quite right. If you were to listen and tap along to the songs that are labeled as outliers in the plot you would find that the original "Wonderwall" in fact has a BPM of 87. "The Times They Are A-Changin" by Bob Dylan was correctly labeled with a tempo of 174 BPM. 
+In the "Movie Trailer Cover" column, we see the outliers at the top of the plot often originate from a pop song with much lower average BPM. By listening to the songs "Never Tear Us Apart", "Wicked Game", "Dont panic" and "Creep" on Spotify you can hear that the algorithm has made a mistake in classification. Actually these songs have an average BPM of half what is displayed in the graph (In case of "Dont Panic" even twice halved). This phenomenon is called tempo octaves and arises because during tempo detection its difficult for the algorithm to distinct between the double, normal and half time in a song. Especially in the type of slow, percussive less songs that we find in our cover playlist (more on this later). First I want to fix the tempo graph by using the "tempo_confidence" column in the Spotify API.
+
+
+
+```{r prepping violin data tempo adjust, include=FALSE}
+print(select(combined, tempo_confidence, id, tempo, kind) %>% filter(tempo_confidence < 0.3, tempo > 110))
+
+
+combined$corr_tempo <- ifelse(combined$tempo_confidence < 0.3 & combined$tempo > 110, combined$tempo / 2, combined$tempo)
+combined$corr_tempo <- ifelse(combined$tempo_confidence < 0.9 & combined$tempo > 110 & combined$kind == "Movie Trailer Cover", combined$tempo / 2, combined$corr_tempo)
+
+combined$corr_tempo <- ifelse(combined$corr_tempo == 84.7105 |
+                              combined$corr_tempo == 82.9350 |
+                              combined$corr_tempo == 108.85500,
+                              combined$corr_tempo / 2, combined$corr_tempo)
+
+print(select(combined, corr_tempo, id, kind))
+```
+
+### Fixing the data
+```{r violin plot tempo right}
+
+ggwithinstats(
+  data = combined, x = kind, y = corr_tempo,
+  results.subtitle =FALSE, 
+  outlier.tagging = TRUE,
+  outlier.label = id,
+  outlier.coef = 0.4,
+  grouping.var = id,
+  centrality.path = FALSE,
+  point.path = TRUE,
+  point.path.args = aes(alpha = 0.15, linetype = "dashed"),
+  messages = FALSE) +
+  labs(
+    x = "Song Type",
+    y = "Tempo (BPM)",
+    title = "Tempo analisys of movie trailer covers",
+    subtitle = "",
+    caption = ""
+  ) + scale_x_discrete(limits = c("Original", "Movie Trailer Cover"))
+```
+
+***
+
+**What is "tempo_confidence"?**
+
+Spotify uses its own novelty algorithm to detect the onsets of beats in the tracks. From these onsets it uses a Fourier function to fit the onsets it detected with a certain wavelength that will decide the most likely BPM for the track. Apart from the "tempo octaves" described in the last page, you can imagine there are a lot of elements that might influence the effectiveness of tempo detection like: a steady beat, readable onset, etc. The data was corrected as follows: if the "tempo_confidence" is lower than 0.3 divide the tempo by half. Together with a few hand adjusted data points this amounts to the improved "Tempo Analysis of Movie Trailer Covers" plot.
+
+**Examining the plot**
+We now see there is a significant decrease in average tempo between the two playlists and all connecting lines are aimed downward. By listening to the songs labeled as ouliers in the plot we can check if the plot has now correctly estimated the BPM of the tracks. For many tracks this is the case, however there remain some errors that had to be corrected by hand ("Dont panic", "Wicked Game"). The mean tempo_confidence of the originals is {} whilst that of the covers is {}, why are the covers much more difficult to estimate the tempo of? Lets take a closer look.
+
+### A closer look at the outlier
+
+```{r image_grobs, fig.show = "hold", out.width = "100%", fig.align = "default"}
+
+knitr::include_graphics("/Users/rori/Documents/UVA_3/Comp_Music/Plots/Nirvanamoretime.png")
+
+knitr::include_graphics("/Users/rori/Documents/UVA_3/Comp_Music/Plots/BatmanTempo.png")
+
+
+```
+
+***
+
+**Why is this an outlier?**
+
+This track was definitely not one of the outliers when it came to being fast or slow pased. However, the song is one of the few horizontal lines between the tempo of the covers and originals. I therefore decided to look ate the tempogram of both versions and see how the tempo has remained so similar. Which as we established in the previous plots, is unusual for trailercore music. 
+
+**Comparing plots**
+
+The two plots show a tempogram for both the original as for the cover of Nirvana's "Something In The Way", the cover was used in the latest Batman starring Robert Pattinson. The tempogram plots the time in seconds along the x-axis and the estimated BPM of the song (per section) along the y-axis. The estimation of BPM in the original Nirvana version of the song has some difficulties as the song starts out due to it only being the strumming of a guitar and some vocals. The strumming consists of two long strokes and four short ones, this then repeats itself. We can see in the tempogram that the BPM estimation goes up and down according to the strumming pattern. The BPM levels out when the chorus hits and the drums fall in at about 55 seconds. A steady drum pattern is much easier to detect the BPM of due to the novelty function being energy sensitive. The drums fall away in the next verse and we can see that the tempogram again has difficulty assigning BPM to this part of the track. If we take the mean of the estimated tempo in the different parts we find about a 105 BPM for the song which is accurate. 
+
+If we look at the tempogram of the Batman version we see a similar intro to the Nirvana song: a vague line unable to get a grasp on the tempo. In fact, the song starts off almost the same as the original as the actual track by Nirvana is used to make the trailer version. The Nirvana track has been re-arranged and an orchestra plays around the verse and chorus. This also explains why the tempo is so similar in both songs as they kept the speed of the origional song as to not have to augment Kurt Cobain voice.  
+
+
+```{r prep for TEMPOGRAM WONDERWALL}
+tidy_originals <- get_tidy_audio_analysis("06kJw3NrXKRqFfpm7SNz4W?si=1c4781ebfc9040f9")
+``` 
+```{r TEMPOGRAM WONDERWALL}
+# tidy_originals %>% tempogram(window_size = 8, hop_size = 1, cyclic = TRUE) %>%
+#   ggplot(aes(x = time, y = bpm, fill = power)) +
+#   geom_raster() +
+#   scale_fill_viridis_c(guide = "none") +
+#   labs(x = "Time (s)", y = "Tempo (BPM)", title ="Wonderwall - Ex Makina") +
+#   theme_classic()
+``` 
+
+```{r}
+df <- combined_tempo
+
+fig <- df %>%
+  plot_ly(
+    type = 'scatter',
+    mode = 'markers',
+    x = ~tempo,
+    y = ~tempo_section_mean,
+    marker = list(size = ~duration, sizemode = 'area'),
+    # color = ~kind,
+    text = ~track.name,
+    hovertemplate = paste(
+      "<b>%{text}</b><br><br>",
+      "%{yaxis.title.text}: %{y:}<br>",
+      "%{xaxis.title.text}: %{x:}<br>",
+      # "Number Employed: %{marker.size:,}",
+      "<extra></extra>"
+      )
+    ) 
+
+fig <- fig %>%
+  layout(legend = list(orientation = 'h', y = -0.3))
+
+
+```
+
+
+Mode {.storyboard}
+==============================
+
+### Have the songs been transposed to minor? 
+```{r mode piechart}
+test <- combined %>% mutate(mode = ifelse(mode == 0, "Minor", "Major"))
+
+# Basic piechart
+mode_piechart <- ggplot(test %>% group_by(kind) %>% count(mode_name), aes(x="", y= n, fill=mode_name)) +
+  geom_bar(stat="identity", width=1) +
+  coord_polar("y", start=0) +
+  facet_wrap(~fct_rev(kind)) +
+  labs(title = "A Rise in Minor Songs")
+
+mode_piechart
+```
+
+***
+
+**The minor key**
+Often associated with the sadness of a song, and a possible contender  
+
+**Examining the plot**
+
+The pie chart is a little bold. What I'm trying to show is that there is an increase of the use of minor key in the movie trailer versions of the songs. However, it only applies to a relatively little percentage of the songs and doesn't explain the total amount of valence that is being lost. 
+
+
+
+```{r}
+# movie trailer covers - original playlist = 56quBtqjxzHDuphoB8GdP0?si=86d87349d4184902
+
+# Movie trailer cover = 4sonZikgqtbefZyJy9mMl0?si=cbc8429196dc46ee
+
+# Batman version 5PQV6JRuE9wSfPS49Zlrx7?si=6fd964e936564e6c
+# Nirvana version 4gHnSNHs8RyVukKoWdS99f?si=db9bc4f1139243dd
+
+
+
+```
+
+Timbre {.storyboard}
+==============================
+
+```{r}
+# jazz %>%
+#   mutate(
+#     timbre =
+#       map(
+#         segments,
+#         compmus_summarise,
+#         timbre,
+#         method = "mean"
+#       )
+#   ) %>%
+#   select(genre, timbre) %>%
+#   compmus_gather_timbre() %>%
+#   ggplot(aes(x = basis, y = value, fill = genre)) +
+#   geom_violin() +
+#   scale_fill_viridis_d() +
+#   labs(x = "Spotify Timbre Coefficients", y = "", fill = "Genre")
+
+```
+
+
+Structure {.storyboard}
+==============================
