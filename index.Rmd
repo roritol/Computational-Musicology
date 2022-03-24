@@ -549,7 +549,7 @@ cov <-
   )
 ```
 
-```{r create combined dataframe, include=FALSE}
+```{r create combined dataframe 2, include=FALSE}
 songnames <- c("Black Hole Sun",
                "Something In The Way",                                             
                "I've Got No Strings",                                              
