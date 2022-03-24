@@ -1,4 +1,3 @@
-
 ---
 title: "Computational Musicology Portfolio"
 author: "Rory Tol"
