@@ -1,13 +1,13 @@
 ---
 title: "Computational Musicology Portfolio"
 author: "Rory Tol"
-date: '2022-02-26'
+date: '2022'
 output:
   flexdashboard::flex_dashboard:
     logo: /Users/rori/Documents/UVA_3/Comp_Music/Computational-Musicology/logo.png
     orientation: columns
     vertical_layout: fill
-    # css: /Users/rori/Documents/UVA_3/Comp_Music/Computational-Musicology/Style.css
+    css: /Users/rori/Documents/UVA_3/Comp_Music/Computational-Musicology/Style.css
     theme: flatly
     self_contained: false
 ---

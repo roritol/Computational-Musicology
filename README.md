@@ -1,2 +1,9 @@
 # Computational-Musicology
 
+Anyone who has watched a movie trailer in the past 10 years or so has most likely come across this phenomenon: "trailercore". A genre of music that describes the covers of well-known pop songs used in movie trailers. A trend that has been ongoing for more than a decade now, with the start of the trend marked by the use of Radiohead's "Creep" in the trailer of "The Social Network" (2010) and the trend still going strong with the use of the song "Something in the Way" by Nirvana in the latest Batman film (2022). Usually trailercore can be described as a slowed down sad and epic version of the original pop song, often the song is used to lay emphasis on lyrics that complement the plot of the film: "Creep" being a good example here, but also "Crazy" in the Bridman trailer or "Survivor" in Tomb Raider are candid examples. The use of these songs is quite clever as the viewer immediately has a sense of recognition that draws them to the trailer. So we will most likely be hearing a lot more of our favorite songs slowed down and sad as a trailercore cover in the future. 
+
+**But what really defines the difference between an original and a trailercore cover?**
+
+What I wish to accomplish in this exploratory data visualization is to find additional musical parameters to describe movie trailer covers (or trailercore) and to test the validity of descriptions like "slowed down", "sad" and "epic" that are often associated with the genre already. I will be using two self made Spotify playlists for this research, containing a section of 27 songs used in movie trailers, one with the originals and one containing the movie trailer covers. I will be examining these playlist through the spotify API for Tempo, Mode, Timbre and Structure.
+
+Find the webpage with the research here -> https://roritol.github.io/Computational-Musicology/
