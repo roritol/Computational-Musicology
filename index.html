@@ -839,10 +839,14 @@ html, body {
 <img class="mobile-figure" data-mobile-figure-id=fig2 src="index_files/figure-html/violin%20plot%20tempo%20wrong-1.mb.png" />
 <img class="mobile-figure" data-mobile-figure-id=fig3 src="index_files/figure-html/violin%20plot%20tempo%20right-1.mb.png" />
 <img class="mobile-figure" data-mobile-figure-id=fig4 src="index_files/figure-html/mode%20piechart-1.mb.png" />
-<img class="mobile-figure" data-mobile-figure-id=fig5 src="index_files/figure-html/unnamed-chunk-4-1.mb.png" />
-<img class="mobile-figure" data-mobile-figure-id=fig6 src="index_files/figure-html/PLOT%20the%20most%20important%20features-1.mb.png" />
-<img class="mobile-figure" data-mobile-figure-id=fig7 src="index_files/figure-html/PLOR%20using%20most%20important%20features%20to%20differentiate%20playlists-1.mb.png" />
-<img class="mobile-figure" data-mobile-figure-id=fig8 src="index_files/figure-html/PLOT%20plotting%20all%20features-1.mb.png" />
+<img class="mobile-figure" data-mobile-figure-id=fig5 src="index_files/figure-html/unnamed-chunk-3-1.mb.png" />
+<img class="mobile-figure" data-mobile-figure-id=fig6 src="index_files/figure-html/unnamed-chunk-4-1.mb.png" />
+<img class="mobile-figure" data-mobile-figure-id=fig7 src="index_files/figure-html/unnamed-chunk-7-1.mb.png" />
+<img class="mobile-figure" data-mobile-figure-id=fig8 src="index_files/figure-html/PLOT%20the%20most%20important%20features-1.mb.png" />
+<img class="mobile-figure" data-mobile-figure-id=fig9 src="index_files/figure-html/PLOR%20using%20most%20important%20features%20to%20differentiate%20playlists-1.mb.png" />
+<img class="mobile-figure" data-mobile-figure-id=fig10 src="index_files/figure-html/PLOT%20plotting%20all%20features-1.mb.png" />
+<img class="mobile-figure" data-mobile-figure-id=fig11 src="index_files/figure-html/unnamed-chunk-9-1.mb.png" />
+<img class="mobile-figure" data-mobile-figure-id=fig12 src="index_files/figure-html/unnamed-chunk-11-1.mb.png" />
 <script type="text/javascript">
 
 
@@ -2635,53 +2639,47 @@ window.FlexDashboardComponents.push({
 
 <div id="dashboard-container">
 
-<div id="intro" class="section level1">
-<h1>Intro</h1>
-<div id="column" class="section level2 tabset">
-<h2 class="tabset">Column</h2>
-<div id="trailercore-is-a-well-known-phenomenon-in-the-film-industry"
-class="section level4">
-<h4>Trailercore is a well known phenomenon in the film industry…</h4>
-<p>These are my hand crafted playlists:</p>
-<iframe src="https://open.spotify.com/embed/playlist/56quBtqjxzHDuphoB8GdP0?utm_source=generator&amp;theme=0" width="100%" height="380" frameBorder="0" allowfullscreen allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture">
+<div id="intro" class="section level1 storyboard">
+<h1 class="storyboard">Intro</h1>
+<div id="an-introduction-to-trailercore" class="section level3"
+data-commentary-width="450">
+<h3>An introduction to Trailercore</h3>
+<p>Anyone who has watched a movie trailer in the past 10 years or so has
+most likely come across this phenomenon: “trailercore”. A genre of music
+that describes the covers of well-known pop songs used in movie
+trailers. A trend that has been ongoing for more than a decade now, with
+the start of the trend marked by the use of Radiohead’s “Creep” in the
+trailer of “The Social Network” (2010) and the trend still going strong
+with the use of the song “Something in the Way” by Nirvana in the latest
+Batman film (2022). Usually trailercore can be described as a slowed
+down sad and epic version of the original pop song, often the song is
+used to lay emphasis on lyrics that complement the plot of the film:
+“Creep” being a good example here, but also “Crazy” in the Bridman
+trailer or “Survivor” in Tomb Raider are candid examples. The use of
+these songs is quite clever as the viewer immediately has a sense of
+recognition that draws them to the trailer. So we will most likely be
+hearing a lot more of our favorite songs slowed down and sad as a
+trailercore cover in the future.</p>
+<p><strong>But what really defines the difference between an original
+and a trailercore cover? </strong></p>
+<p>What I wish to accomplish in this exploratory data visualization is
+to find additional musical parameters to describe movie trailer covers
+(or trailercore) and to test the validity of descriptions like “slowed
+down”, “sad” and “epic” that are often associated with the genre
+already. I will be using two self made Spotify playlists for this
+research, containing a section of 27 songs used in movie trailers, one
+with the originals and one containing the movie trailer covers. I will
+be examining these playlist through the spotify API for Tempo, Mode,
+Timbre and Structure.</p>
+<hr />
+<p>These are my hand crafted playlists, have a listen!</p>
+<iframe src="https://open.spotify.com/embed/playlist/56quBtqjxzHDuphoB8GdP0?utm_source=generator&amp;theme=0" width="10%" height="30" frameBorder="0" allowfullscreen allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture">
 </iframe>
-<iframe src="https://open.spotify.com/embed/playlist/4sonZikgqtbefZyJy9mMl0?utm_source=generator&amp;theme=0" width="100%" height="380" frameBorder="0" allowfullscreen allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture">
+<iframe src="https://open.spotify.com/embed/playlist/4sonZikgqtbefZyJy9mMl0?utm_source=generator&amp;theme=0" width="10%" height="30" frameBorder="0" allowfullscreen allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture">
 </iframe>
-<p>** THIS TEXT IS NOT MINE I STILL HAVE TO RE WRITE IT**</p>
-<p>Anyone who’s watched a trailer for basically any genre of movie over
-the past 10 years or so — from horror and action to serious dramas — has
-probably encountered the “trailercore” phenomenon. Basically, it’s when
-a movie trailer uses a cover version of a familiar song that’s been
-slowed down and stripped back, with added emotional emphasis to the
-lyrics, usually overlaying them with darker meaning. Oh, and the song is
-usually a nauseatingly on-the-nose match for some basic idea in the
-movie’s premise: Pink Floyd’s “Eclipse” in the Dune trailer, “I’ve Got
-No Strings” for Avengers: Age of Ultron, “Crazy” in the Birdman trailer,
-or “I Started a Joke” for Suicide Squad, to name just a handful.
-Usually, the trailer starts off with a score that builds up to the drop
-of the song, where viewers are meant to make the connection and
-experience a moment of shock and awe. But after a decade of this
-technique, it’s become harder to get that kind of strong reaction.
-There’s an art to trailercore, and not all trailers are made
-equally.</p>
-<p>Slowing down popular songs for dramatic effect in trailers has been
-an occasional gimmick for decades, especially in video game trailers,
-like the 2001 Gears of War trailer built around “Mad World”. But the
-idea solidified into a trend with The Social Network trailer that used a
-creepy version of Radiohead’s “Creep” by Belgian choir Scala &amp;
-Kolacny Brothers to suggest how it was going to address Mark
-Zuckerberg’s rise to power. Trailer editor Mark Woollen created the ad
-before any of the Oscar-winning score was finished, and in an interview
-with The New Yorker, he revealed that he used a 2001 cover of the song
-he had stashed on an old hard drive. That trailer radically influenced
-the sound of movie trailers for the next decade.</p>
 </div>
-</div>
-</div>
-<div id="tempo" class="section level1 storyboard">
-<h1 class="storyboard">Tempo</h1>
 <div id="are-movie-trailer-songs-more-sad-then-their-original"
-class="section level3" data-commentary-width="400">
+class="section level3" data-commentary-width="450">
 <h3>Are movie trailer songs more sad then their original?</h3>
 <div class="knitr-options" data-fig-width="576" data-fig-height="460">
 
@@ -2703,60 +2701,68 @@ BPM on the y-axis and the valence calculated by the Spotify API on the
 x-axis for both the cover playlist as the playlist containing the
 original songs. We can see from the plot that the valence of the cover
 songs has quite drastically decreased for the playlist containing covers
-(red). The tempo on the other hand, only shows a very slight
-difference.</p>
+(red). The tempo on the other hand, only shows a very slight difference.
+The other parameters (volume, duration) were plotted to see if there
+were any significant ties to valence, however from the plot we can see
+sizes and opacity are spread quite randomly.</p>
 <p>Great! We have established that there is a significant decrease in
-valence. But since Spotify doesn’t tell us what it bases valence on,
-there is little to be said about the exact differences between the two
-playlists. For all I know tempo is already taken into account when
-calculating valence. Therefore, I’ll continue looking for specific
-musical differences that account for the increased sadness in the cover
-songs. First, lets take a closer look at the Tempo, something seems
-off.</p>
-<p><strong>how do I include calculations in the text again?</strong></p>
+valence. But since Spotify doesn’t tell us what musical parameters it
+bases valence on, there is little to be said about the exact differences
+between the two playlists musically. For all I know tempo is already
+taken into account when calculating valence. Therefore, I’ll continue
+looking for specific musical differences that account for the increased
+sadness in the cover songs. First, lets take a closer look at the Tempo,
+something seems off.</p>
+</div>
+</div>
+<div id="tempo" class="section level1 storyboard">
+<h1 class="storyboard">Tempo</h1>
 <div class="knitr-options" data-fig-width="576" data-fig-height="460">
 
 </div>
-</div>
-<div id="the-change-of-tempo" class="section level3">
-<h3>The change of tempo</h3>
+<div id="is-trailercore-slower" class="section level3"
+data-commentary-width="450">
+<h3>Is trailercore slower?</h3>
 <div class="knitr-options" data-fig-width="576" data-fig-height="460">
 
 </div>
 <p><img src="index_files/figure-html/violin%20plot%20tempo%20wrong-1.png" width="576" data-figure-id=fig2 /></p>
 <hr />
-<p><strong>What is Tempo?</strong> Tempo as a musical parameter in the
-spotify API contains the overall estimated tempo of a track in beats per
-minute (BPM). In musical terminology, tempo is the speed or pace of a
-given piece and derives directly from the average beat duration.</p>
-<p><strong>Examining the plot</strong> Like the previous plot showed us,
-the average tempo of the the two playlists is very similar. However we
-can tell that many of the songs have not stayed on the same BPM after
-they were covered, by looking at the spread of dots along the y-axis or
-by following the dotted lines (going from original to cover). Counting
-the occurrences of near horizontal lines I conclude that very few of the
-songs have stayed on the same average BPM. Rather, some of the songs
-have drastically increased tempo and some have drastically decreased
-tempo, resulting in the same average. This doesn’t seem quite right. If
-you were to listen and tap along to the songs that are labeled as
-outliers in the plot you would find that the original “Wonderwall” in
-fact has a BPM of 87. “The Times They Are A-Changin” by Bob Dylan was
-correctly labeled with a tempo of 174 BPM. In the “Movie Trailer Cover”
-column, we see the outliers at the top of the plot often originate from
-a pop song with much lower average BPM. By listening to the songs “Never
-Tear Us Apart”, “Wicked Game”, “Dont panic” and “Creep” on Spotify you
-can hear that the algorithm has made a mistake in classification.
-Actually these songs have an average BPM of half what is displayed in
-the graph (In case of “Dont Panic” even twice halved). This phenomenon
-is called tempo octaves and arises because during tempo detection its
-difficult for the algorithm to distinct between the double, normal and
-half time in a song. Especially in the type of slow, percussive less
-songs that we find in our cover playlist (more on this later). First I
-want to fix the tempo graph by using the “tempo_confidence” column in
-the Spotify API.</p>
+<p><strong>What is Tempo?</strong></p>
+<p>Tempo as a musical parameter in the Spotify API contains the overall
+estimated tempo of a track in beats per minute (BPM). In musical
+terminology, tempo is the speed or pace of a given piece and derives
+directly from the average beat duration.</p>
+<p><strong>Examining the plot:</strong></p>
+<p>Like the previous plot showed us, the average tempo of the the two
+playlists is very similar. However we can tell that many of the songs
+have not stayed on the same BPM after they were covered, by looking at
+the spread of dots along the y-axis or by following the dotted lines
+(going from original to cover). Counting the occurrences of near
+horizontal lines I conclude that very few of the songs have stayed on
+the same average BPM. Rather, some of the songs have drastically
+increased tempo and some have drastically decreased tempo resulting in
+the same average. This doesn’t seem quite right. If you were to listen
+and tap along to the songs that are labeled as outliers in the plot you
+would find that the original “Wonderwall” in fact has a BPM of 87. “The
+Times They Are A-Changin” by Bob Dylan was correctly labeled with a
+tempo of 174 BPM. In the “Movie Trailer Cover” column, we see the
+outliers at the top of the plot often originate from a pop song with
+much lower average BPM. By listening to the songs “Never Tear Us Apart”,
+“Wicked Game”, “Dont panic” and “Creep” on Spotify you can hear that the
+algorithm has made a mistake in classification. Actually these songs
+have an average BPM of half what is displayed in the graph (In case of
+“Dont Panic” even twice halved). This phenomenon is called tempo octaves
+and arises because during tempo detection its difficult for the
+algorithm to distinct between the double, normal and half time in a
+song. Especially in the type of slow, percussive less songs that we find
+in our cover playlist (more on this later). First I want to fix the
+tempo graph by using the “tempo_confidence” column in the Spotify
+API.</p>
 </div>
-<div id="fixing-the-data" class="section level3">
-<h3>Fixing the data</h3>
+<div id="fixing-the-spotify-api-tempo-parameter" class="section level3"
+data-commentary-width="450">
+<h3>Fixing the spotify API tempo parameter</h3>
 <div class="knitr-options" data-fig-width="576" data-fig-height="460">
 
 </div>
@@ -2773,24 +2779,26 @@ readable onset, etc. The data was corrected as follows: if the
 “tempo_confidence” is lower than 0.3 divide the tempo by half. Together
 with a few hand adjusted data points this amounts to the improved “Tempo
 Analysis of Movie Trailer Covers” plot.</p>
-<p><strong>Examining the plot</strong> We now see there is a significant
-decrease in average tempo between the two playlists and all connecting
-lines are aimed downward. By listening to the songs labeled as ouliers
-in the plot we can check if the plot has now correctly estimated the BPM
-of the tracks. For many tracks this is the case, however there remain
-some errors that had to be corrected by hand (“Dont panic”, “Wicked
-Game”). The mean tempo_confidence of the originals is {} whilst that of
-the covers is {}, why are the covers much more difficult to estimate the
-tempo of? Lets take a closer look.</p>
+<p><strong>Examining the plot:</strong></p>
+<p>We now see there is a significant decrease in average tempo between
+the two playlists and all connecting lines are aimed downward. By
+listening to the songs labeled as ouliers in the plot we can check if
+the plot has now correctly estimated the BPM of the tracks. For many
+tracks this is the case, however there remain some errors that had to be
+corrected by hand (“Dont panic”, “Wicked Game”). The mean
+tempo_confidence of the originals is 0.57 whilst that of the covers is
+0.34, why are the covers much more difficult to estimate the tempo of?
+Lets take a closer look.</p>
 </div>
-<div id="a-closer-look-at-the-outlier" class="section level3">
+<div id="a-closer-look-at-the-outlier" class="section level3"
+data-commentary-width="450">
 <h3>A closer look at the outlier</h3>
 <div class="knitr-options" data-fig-width="576" data-fig-height="460">
 
 </div>
-<p><img src="/Users/rori/Documents/UVA_3/Comp_Music/Plots/Nirvanamoretime.png" width="100%" data-figure-id=fig4 /><img src="/Users/rori/Documents/UVA_3/Comp_Music/Plots/BatmanTempo.png" width="100%" data-figure-id=fig4 /></p>
+<p><img src="/Users/rori/Documents/UVA_3/Comp_Music/Plots/Nirvanamoretime.png" width="60%" data-figure-id=fig4 /><img src="/Users/rori/Documents/UVA_3/Comp_Music/Plots/BatmanTempo.png" width="60%" data-figure-id=fig4 /></p>
 <hr />
-<p><strong>Why is this an outlier?</strong></p>
+<p><strong>Why is “Something In The Way” an outlier?</strong></p>
 <p>This track was definitely not one of the outliers when it came to
 being fast or slow pased. However, the song is one of the few horizontal
 lines between the tempo of the covers and originals. I therefore decided
@@ -2820,8 +2828,8 @@ tempo. In fact, the song starts off almost the same as the original as
 the actual track by Nirvana is used to make the trailer version. The
 Nirvana track has been re-arranged and an orchestra plays around the
 verse and chorus. This also explains why the tempo is so similar in both
-songs as they kept the speed of the origional song as to not have to
-augment Kurt Cobain voice.</p>
+songs as they kept the speed of the original song as to not have to
+augment Kurt Cobain’s voice.</p>
 <div class="knitr-options" data-fig-width="576" data-fig-height="460">
 
 </div>
@@ -2835,22 +2843,76 @@ augment Kurt Cobain voice.</p>
 </div>
 <div id="mode" class="section level1 storyboard">
 <h1 class="storyboard">Mode</h1>
-<div id="have-the-songs-been-transposed-to-minor"
-class="section level3">
+<div id="have-the-songs-been-transposed-to-minor" class="section level3"
+data-commentary-width="450">
 <h3>Have the songs been transposed to minor?</h3>
 <div class="knitr-options" data-fig-width="576" data-fig-height="460">
 
 </div>
 <p><img src="index_files/figure-html/mode%20piechart-1.png" width="576" data-figure-id=fig4 /></p>
 <hr />
-<p><strong>The minor key</strong> Often associated with the sadness of a
-song, and a possible contender</p>
+<p><strong>What is the minor key?</strong></p>
+<p>Minor is one of many modes a song can be in, together with major they
+are the two most used modes in Western music. Musically, minor describes
+the use of notes, or rather the distances between notes in a scale. As
+minor is often associated with the sadness of a song, it makes a
+possible contender when it comes to explaining why the trailercore
+versions of songs are often described as “sad”.</p>
 <p><strong>Examining the plot</strong></p>
-<p>The pie chart is a little bold. What I’m trying to show is that there
-is an increase of the use of minor key in the movie trailer versions of
-the songs. However, it only applies to a relatively little percentage of
-the songs and doesn’t explain the total amount of valence that is being
-lost.</p>
+<p>The pie chart as visualization is a little bold, but it gets the job
+done. What I’m trying to see is if there is an increase of the use of
+minor key in the movie trailer versions of the songs. As shown in the
+pie chart, the movie trailer versions have more songs in the minor
+scale. Which would be a perfect explanation for the loss of valence.
+However, its a relatively little percentage of the playlist that have
+converged to minor, and the largest part of the trailercore tracks are
+still in major key! There have to be more ways of influencing the
+valence of a song through changing its tonality. Lets take a closer
+look.</p>
+</div>
+<div id="how-can-a-minor-song-still-seem-sadder" class="section level3"
+data-commentary-width="450">
+<h3>How can a minor song still seem sadder?</h3>
+<div class="knitr-options" data-fig-width="576" data-fig-height="460">
+
+</div>
+<p><img src="index_files/figure-html/unnamed-chunk-3-1.png" width="576" data-figure-id=fig5 /></p>
+<hr />
+<p><strong>What is the chromagram?</strong></p>
+<p>The chromagram looks at the pitch of every segment in a song and
+plots this according to the 12 notes in an octave. Ths allows us to see
+how the mode or notes have been used throughout the song.</p>
+<p><strong>Examining the plot</strong></p>
+<p>I chose Wonderwall because Spotify showed that this song was one of
+the ones that changed to a minor mode in its covered version. First
+thing to notice is that the original labeling done by the Spotify API
+was incorrect. The song “Wonderwall” was not in a major mode in its
+original form but a minor mode, so the song never changed mode (however
+it did transpose from F# to F). This makes me believe that our previous
+plot showing the use of minor and major modes in the two playlists may
+not be accurate. We know now that the two songs are both in the minor
+key. So what makes the trailercore version sound so much sadder? Can we
+find a musical reason in the chromagram?</p>
+<p>Well, yes! If you take a close look at how the two songs make use of
+the notes in their respective minor scales. We can see that the original
+sticks to full tone jumps (two semitones), whilst the cover lays a lot
+of emphasis on the semitone between C and C#. The semitone causes a lot
+of friction resulting in an uneasy feeling. Also, the location of the
+two semi tonal jumps in the scales respective to the ground tone define
+the mode that the listener perceives. By laying emphasis on the C C#
+jump there is also more emphasis on the fact that it is a minor scale.
+This could possibly explain why Spotify correctly labeled the mode of
+the cover but not the original, as the original avoids the use of the
+semitones in its mode which makes it harder to place which mode the song
+is in.</p>
+</div>
+<div id="chordogram" class="section level3" data-commentary-width="400">
+<h3>Chordogram</h3>
+<div class="knitr-options" data-fig-width="576" data-fig-height="460">
+
+</div>
+<p><img src="index_files/figure-html/unnamed-chunk-4-1.png" width="576" data-figure-id=fig6 /></p>
+<hr />
 <div class="knitr-options" data-fig-width="576" data-fig-height="460">
 
 </div>
@@ -2858,42 +2920,148 @@ lost.</p>
 </div>
 <div id="timbre" class="section level1 storyboard">
 <h1 class="storyboard">Timbre</h1>
-<div
-id="how-can-we-differentiate-between-a-movie-trailer-cover-and-its-original"
-class="section level3">
-<h3>How can we differentiate between a movie trailer cover and its
-original?</h3>
-<hr />
-<p><strong>Intro to the section</strong></p>
-<p>We have already looked at the tempo and the mode of the songs in our
-two playlists but there remain many more features to be considered to
-describe the difference between movie trailer cover and its original. To
-make the best of the spotify API ive plotted a matrix containing all
-features</p>
+<div class="knitr-options" data-fig-width="576" data-fig-height="460">
+
 </div>
-<div id="the-most-important-features" class="section level3">
+<div id="the-most-important-features" class="section level3"
+data-commentary-width="450">
 <h3>The most important features</h3>
 <div class="knitr-options" data-fig-width="576" data-fig-height="460">
 
 </div>
-<p><img src="index_files/figure-html/PLOT%20the%20most%20important%20features-1.png" width="576" data-figure-id=fig6 /></p>
+<p><img src="index_files/figure-html/PLOT%20the%20most%20important%20features-1.png" width="576" data-figure-id=fig8 /></p>
 <hr />
-<p><strong>What are features?</strong></p>
-<p>We are looking at two playlists throughout the research, each
-playlist is made up of songs that made up out of certain qualities</p>
-<hr />
+<p><strong>Intro to the section</strong></p>
+<p>We have already looked at the tempo and the mode of the songs in our
+two playlists but there remain many more features to be considered to
+describe the difference between trailercore and the original songs they
+cover. To make the best of the Spotify API I’ve plotted a matrix
+containing all features that the API distinguishes and organised them in
+order of best distinctive quality when it comes to discerning the two
+playlist. Therefore, these features are the most important when it comes
+to describing trailercore music. The ordered of importance we see in the
+plot is based on what a random forest classification algorithm with a k
+of 2 has found to be the most accurate feature to separate the two
+playlist.</p>
+<p><strong>Examining the plot</strong></p>
+<p>As I would have guessed the most distinctive feature is valence.
+However, valence is quickly followed by a timbre feature called c02 that
+I had no way of knowing. These “c0…” timbre features are qualities that
+Spotify recognizes in the music but does not share the exact description
+of. Which is a shame, as we can see in the next plot using both valence
+as c02 allows us to very accurately discern the two playlists. Anther
+notable element in the plot is the how far down the tempo feature is on
+the matter of importance. As we had previously established, Spotify has
+read the tempo of the tracks wrong due to tempo octaves, and it actually
+is an incredibly useful feature to describe the difference in the two
+genres. Loudness is found at the very bottom of the plot, indicating
+that the tracks have an equal amount of variate in loudness, or that the
+playlists are just very similarly loud.</p>
+</div>
+<div id="the-most-important-features-1" class="section level3"
+data-commentary-width="450">
+<h3>The most important features</h3>
 <div class="knitr-options" data-fig-width="576" data-fig-height="460">
 
 </div>
-<p><img src="index_files/figure-html/PLOR%20using%20most%20important%20features%20to%20differentiate%20playlists-1.png" width="576" data-figure-id=fig7 /></p>
+<p><img src="index_files/figure-html/PLOR%20using%20most%20important%20features%20to%20differentiate%20playlists-1.png" width="576" data-figure-id=fig9 /></p>
+<hr />
+<p><strong>Timbre as a coefficient</strong></p>
+<p>I’ve plotted the corrected tempo next to all timbre coefficients to
+show how the shape indicates that it would be a valuable feature.</p>
+</div>
+<div id="closer-look-at-the-timbre-coefficients" class="section level3"
+data-commentary-width="450">
+<h3>Closer look at the Timbre Coefficients</h3>
 <div class="knitr-options" data-fig-width="576" data-fig-height="460">
 
 </div>
-<p><img src="index_files/figure-html/PLOT%20plotting%20all%20features-1.png" width="576" data-figure-id=fig8 /></p>
+<p><img src="index_files/figure-html/PLOT%20plotting%20all%20features-1.png" width="576" data-figure-id=fig10 /></p>
+<hr />
+<p><strong>Heroes - Gang of Youths</strong></p>
+<p>I’ve chosen this song to get some insights into the timbre
+coefficients because its starts of with very little happening and
+gradually adds layers to the song, hence changing the timbre over time.
+As we can see from the plot, the emptiness at the start of the song
+strongly triggers the magnitude of the c07 coefficient. If you listen to
+the song you will hear only rhythmic, staccato like chords are played by
+string section whilst the singer occasionally accompanies them with a
+deep talking voice. Just before the 50 second mark a synth starts
+playing a melody line which triggers the c02 timbre coefficient. From
+off the 50 sec mark a drum kick joins the strings which shifts the
+magnitude being displayed to the c01 coefficient, i can image this is
+something to do with the lower register being active. As the song
+progresses the magnitude in the c02 becomes more intense, we can hear
+this happening as the initial drum gets doubled with an additional kick.
+Every time the melody is played by the synth the c02 lights up on the
+plot.</p>
 </div>
 </div>
-<div id="structure" class="section level1 storyboard">
-<h1 class="storyboard">Structure</h1>
+<div id="structure-old-corpus" class="section level1 storyboard">
+<h1 class="storyboard">Structure (old corpus)</h1>
+<div id="the-structure-of-pop-music" class="section level3"
+data-commentary-width="400">
+<h3>The structure of pop music</h3>
+<div class="knitr-options" data-fig-width="576" data-fig-height="460">
+
+</div>
+<p><img src="index_files/figure-html/unnamed-chunk-9-1.png" width="576" data-figure-id=fig11 /></p>
+<hr />
+<p><strong>Explaining the plot:</strong></p>
+<p>We see the self similarity matrix of the top four songs in the Dutch
+top 50 playlist on Spotify. Via Timbre we can compare the structure of
+the songs internally and find the sections that stand out the most. Also
+we can compare the four songs among each other.</p>
+<p><strong>The black squares (structure)</strong></p>
+<p>A typical structure for a pop song is as follows: intro, verse —
+chorus — verse — chorus — bridge — chorus, outro</p>
+<p>If we look at the timbre based self-similarity matrices displayed in
+the plot we can make out the structure of the song along the black
+squares that form where the x and y axes meet. A larger black square
+means that part of the song (intro, chorus, verse, etc.) was consistent
+for a larger portion. This explains why the black squares are
+proportionate to each other as they are musically expressed as a
+multitude of “bars”. For instance, in the Number 1 hit “Amsterdam”, the
+into is 1 bar followed by a 4 bar chorus. As seen in the plot the black
+square representing the intro is 4 times smaller than the next.</p>
+<p><strong>The brightest squares (the outliers)</strong></p>
+<p>Now that we have a way of interpreting the structure, lets take a
+look at the brightest squares. These indicate the magnitude with which
+the timbre differs from that particular part of the song to other parts
+of the song. If you take a glance at all four of the plots you might
+notice that all plots read the highest difference in timbre between the
+intro and the bridge. This can be explained by listening to the songs,
+the intro of all four songs is a toned down version of the verse or
+chorus. With toned down I mean elements are missing: the beat, the
+vocals or the chords. These elements are introduced after the intro
+creating a change in timbre. Now lets look at the bridge, recognizable
+in the plot by its presence as a cross in the top right of each matrix.
+The bridge functions as a structural change in the song, and is defined
+by the means to provide contrast. Therefore it isn’t strange that the
+bridge is often the most outstanding structure. Notably, the highest
+contrast in three of the songs is found between the bridge and the
+intro. The only exeption is: “Je Blik Richting Mij”, where the intro is
+obviously the most outstanding structure and the bridge seems to bear
+the closest resemblance to the intro. Another notable outlier is the
+song “Amsterdam” where there seems to be two bridges. The two outliers
+are plotted in a chroma self-similarity matrix on the next page so we
+can take a closer look at the pitch information to see if we can find a
+reason for their divergence.</p>
+</div>
+<div id="can-we-eleborate-structures-with-the-chromagram"
+class="section level3">
+<h3>Can We Eleborate Structures With the Chromagram?</h3>
+<div class="knitr-options" data-fig-width="576" data-fig-height="460">
+
+</div>
+<p><img src="/Users/rori/Documents/UVA_3/Comp_Music/Plots/JEBLIK.png" width="60%" data-figure-id=fig13 /><img src="/Users/rori/Documents/UVA_3/Comp_Music/Plots/AMsterdam.png" width="60%" data-figure-id=fig13 /></p>
+<hr />
+<p><strong>Explaining the plot:</strong></p>
+<p>If we look at the chromagram self-similaritymatrix of both songs, it
+immediately becomes clear that there is a lot of repetition. What we are
+interested in is to see how the bridge</p>
+<hr />
+</div>
 </div>
 
 </div>

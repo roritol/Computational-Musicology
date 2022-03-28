@@ -22,6 +22,17 @@ library(thematic)
 library(shiny)
 library(plotly) 
 library(ggpp) 
+library(ggstatsplot)
+library(ggrepel)
+library(ggpmisc)
+library(RColorBrewer)
+library(tidyverse)
+library(tidymodels)
+library(ggdendro)
+library(heatmaply)
+library(spotifyr)
+library(compmus)
+
 
 myclientid <- 'd7e2a7e91dc44321ae9ebe078fdf78e6'
 myclientsecret <- '242e54cc07b6432db2ef073328971bbc'
@@ -96,32 +107,30 @@ combined <-
 
 ```
 
-Intro {}
+Intro {.storyboard}
 ==============================
 
-Column {.tabset}
------------------------------------------------------------------------
+### An introduction to Trailercore {data-commentary-width=450}
+
+**An introduction to Trailercore**
+
+Anyone who has watched a movie trailer in the past 10 years or so has most likely come across this phenomenon: "trailercore". A genre of music that describes the covers of well-known pop songs used in movie trailers. A trend that has been ongoing for more than a decade now, with the start of the trend marked by the use of Radiohead's "Creep" in the trailer of "The Social Network" (2010) and the trend still going strong with the use of the song "Something in the Way" by Nirvana in the latest Batman film (2022). Usually trailercore can be described as a slowed down sad and epic version of the original pop song, often the song is used to lay emphasis on lyrics that complement the plot of the film: "Creep" being a good example here, but also "Crazy" in the Bridman trailer or "Survivor" in Tomb Raider are candid examples. The use of these songs is quite clever as the viewer immediately has a sense of recognition that draws them to the trailer. So we will most likely be hearing a lot more of our favorite songs slowed down and sad as a trailercore cover in the future. 
+
+**But what really defines the difference between an original and a trailercore cover?**
+
+What I wish to accomplish in this exploratory data visualization is to find additional musical parameters to describe movie trailer covers (or trailercore) and to test the validity of descriptions like "slowed down", "sad" and "epic" that are often associated with the genre already. I will be using two self made Spotify playlists for this research, containing a section of 27 songs used in movie trailers, one with the originals and one containing the movie trailer covers. I will be examining these playlist through the spotify API for Tempo, Mode, Timbre and Structure. 
+
+***
+
+These are my hand crafted playlists, have a listen! 
 
 
+<iframe src="https://open.spotify.com/embed/playlist/56quBtqjxzHDuphoB8GdP0?utm_source=generator&theme=0" width="10%" height="30" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
 
-#### Trailercore is a well known phenomenon in the film industry...
+<iframe src="https://open.spotify.com/embed/playlist/4sonZikgqtbefZyJy9mMl0?utm_source=generator&theme=0" width="10%" height="30" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
 
-These are my hand crafted playlists:
 
-<iframe src="https://open.spotify.com/embed/playlist/56quBtqjxzHDuphoB8GdP0?utm_source=generator&theme=0" width="100%" height="380" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
-
-<iframe src="https://open.spotify.com/embed/playlist/4sonZikgqtbefZyJy9mMl0?utm_source=generator&theme=0" width="100%" height="380" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
-
-** THIS TEXT IS NOT MINE I STILL HAVE TO RE WRITE IT**
-
-Anyone who’s watched a trailer for basically any genre of movie over the past 10 years or so — from horror and action to serious dramas — has probably encountered the “trailercore” phenomenon. Basically, it’s when a movie trailer uses a cover version of a familiar song that’s been slowed down and stripped back, with added emotional emphasis to the lyrics, usually overlaying them with darker meaning. Oh, and the song is usually a nauseatingly on-the-nose match for some basic idea in the movie’s premise: Pink Floyd’s “Eclipse” in the Dune trailer, “I’ve Got No Strings” for Avengers: Age of Ultron, “Crazy” in the Birdman trailer, or “I Started a Joke” for Suicide Squad, to name just a handful. Usually, the trailer starts off with a score that builds up to the drop of the song, where viewers are meant to make the connection and experience a moment of shock and awe. But after a decade of this technique, it’s become harder to get that kind of strong reaction. There’s an art to trailercore, and not all trailers are made equally.
-
-Slowing down popular songs for dramatic effect in trailers has been an occasional gimmick for decades, especially in video game trailers, like the 2001 Gears of War trailer built around “Mad World”. But the idea solidified into a trend with The Social Network trailer that used a creepy version of Radiohead’s “Creep” by Belgian choir Scala & Kolacny Brothers to suggest how it was going to address Mark Zuckerberg’s rise to power. Trailer editor Mark Woollen created the ad before any of the Oscar-winning score was finished, and in an interview with The New Yorker, he revealed that he used a 2001 cover of the song he had stashed on an old hard drive. That trailer radically influenced the sound of movie trailers for the next decade.
-
-Tempo {.storyboard}
-======================
-
-### Are movie trailer songs more sad then their original? {data-commentary-width=400}
+### Are movie trailer songs more sad then their original? {data-commentary-width=450}
 
 ```{r Tempo versus Valence}
 
@@ -148,7 +157,7 @@ combined_tempo %>% ggplot(
   geom_point(aes(size = duration / 60)) +
   geom_rug() +
   theme_minimal() +
-  #ylim(0, 5) +
+  scale_color_brewer(palette = "Dark2") +
   labs(
     x = "Valence",
     y = "Mean Tempo (bpm)",
@@ -166,12 +175,13 @@ combined_tempo %>% ggplot(
 The Spotify API gives a few audio features that describe certain aspects of the songs (e.g. speechiness, acousticness, instrumentalness etc.), one of these parameters is "valence" and describes a "musical positiveness" according to the Spotify API webpage. A track with a high valence would be labeled as happy or euphoric whilst tracks with low valence would be labeled as sad or angry. The exact workings of the valence audio features is not described by Spotify. 
 
 **Examining the plot**
-The description of trailercore music often describes the covers to be a slower, sadder version of its original. To test this description, I've plotted the average tempo in BPM on the y-axis and the valence calculated by the Spotify API on the x-axis for both the cover playlist as the playlist containing the original songs. We can see from the plot that the valence of the cover songs has quite drastically decreased for the playlist containing covers (red). The tempo on the other hand, only shows a very slight difference. 
+The description of trailercore music often describes the covers to be a slower, sadder version of its original. To test this description, I've plotted the average tempo in BPM on the y-axis and the valence calculated by the Spotify API on the x-axis for both the cover playlist as the playlist containing the original songs. We can see from the plot that the valence of the cover songs has quite drastically decreased for the playlist containing covers (red). The tempo on the other hand, only shows a very slight difference. The other parameters (volume, duration) were plotted to see if there were any significant ties to valence, however from the plot we can see sizes and opacity are spread quite randomly. 
 
-Great! We have established that there is a significant decrease in valence. But since Spotify doesn't tell us what it bases valence on, there is little to be said about the exact differences between the two playlists. For all I know tempo is already taken into account when calculating valence. Therefore, I'll continue looking for specific musical differences that account for the increased sadness in the cover songs. First, lets take a closer look at the Tempo, something seems off. 
+Great! We have established that there is a significant decrease in valence. But since Spotify doesn't tell us what musical parameters it bases valence on, there is little to be said about the exact differences between the two playlists musically. For all I know tempo is already taken into account when calculating valence. Therefore, I'll continue looking for specific musical differences that account for the increased sadness in the cover songs. First, lets take a closer look at the Tempo, something seems off. 
 
-**how do I include calculations in the text again?**
 
+Tempo {.storyboard}
+======================
 
 ```{r daceability versus speechines copy}
 #speechiness
@@ -237,12 +247,8 @@ conf_tempo <- select(combined, id, tempo, tempo_confidence, kind)
 summary(conf_tempo)
 ```
 
-### The change of tempo
+### Is trailercore slower? {data-commentary-width=450}
 ```{r violin plot tempo wrong}
-library(ggstatsplot)
-library(ggrepel)
-library(ggpmisc)
-
 
 # Manual funtion to make a collumn with outliers
 # is_outlier <- function(x) {
@@ -279,10 +285,12 @@ violin1
 ***
 
 **What is Tempo?**
-Tempo as a musical parameter in the spotify API contains the overall estimated tempo of a track in beats per minute (BPM). In musical terminology, tempo is the speed or pace of a given piece and derives directly from the average beat duration.
 
-**Examining the plot**
-Like the previous plot showed us, the average tempo of the the two playlists is very similar. However we can tell that many of the songs have not stayed on the same BPM after they were covered, by looking at the spread of dots along the y-axis or by following the dotted lines (going from original to cover). Counting the occurrences of near horizontal lines I conclude that very few of the songs have stayed on the same average BPM. Rather, some of the songs have drastically increased tempo and some have drastically decreased tempo, resulting in the same average. This doesn't seem quite right. If you were to listen and tap along to the songs that are labeled as outliers in the plot you would find that the original "Wonderwall" in fact has a BPM of 87. "The Times They Are A-Changin" by Bob Dylan was correctly labeled with a tempo of 174 BPM. 
+Tempo as a musical parameter in the Spotify API contains the overall estimated tempo of a track in beats per minute (BPM). In musical terminology, tempo is the speed or pace of a given piece and derives directly from the average beat duration.
+
+**Examining the plot:**
+
+Like the previous plot showed us, the average tempo of the the two playlists is very similar. However we can tell that many of the songs have not stayed on the same BPM after they were covered, by looking at the spread of dots along the y-axis or by following the dotted lines (going from original to cover). Counting the occurrences of near horizontal lines I conclude that very few of the songs have stayed on the same average BPM. Rather, some of the songs have drastically increased tempo and some have drastically decreased tempo resulting in the same average. This doesn't seem quite right. If you were to listen and tap along to the songs that are labeled as outliers in the plot you would find that the original "Wonderwall" in fact has a BPM of 87. "The Times They Are A-Changin" by Bob Dylan was correctly labeled with a tempo of 174 BPM. 
 In the "Movie Trailer Cover" column, we see the outliers at the top of the plot often originate from a pop song with much lower average BPM. By listening to the songs "Never Tear Us Apart", "Wicked Game", "Dont panic" and "Creep" on Spotify you can hear that the algorithm has made a mistake in classification. Actually these songs have an average BPM of half what is displayed in the graph (In case of "Dont Panic" even twice halved). This phenomenon is called tempo octaves and arises because during tempo detection its difficult for the algorithm to distinct between the double, normal and half time in a song. Especially in the type of slow, percussive less songs that we find in our cover playlist (more on this later). First I want to fix the tempo graph by using the "tempo_confidence" column in the Spotify API.
 
 
@@ -302,7 +310,7 @@ combined$corr_tempo <- ifelse(combined$corr_tempo == 84.7105 |
 print(select(combined, corr_tempo, id, kind))
 ```
 
-### Fixing the data
+### Fixing the spotify API tempo parameter {data-commentary-width=450}
 ```{r violin plot tempo right}
 
 ggwithinstats(
@@ -331,12 +339,13 @@ ggwithinstats(
 
 Spotify uses its own novelty algorithm to detect the onsets of beats in the tracks. From these onsets it uses a Fourier function to fit the onsets it detected with a certain wavelength that will decide the most likely BPM for the track. Apart from the "tempo octaves" described in the last page, you can imagine there are a lot of elements that might influence the effectiveness of tempo detection like: a steady beat, readable onset, etc. The data was corrected as follows: if the "tempo_confidence" is lower than 0.3 divide the tempo by half. Together with a few hand adjusted data points this amounts to the improved "Tempo Analysis of Movie Trailer Covers" plot.
 
-**Examining the plot**
-We now see there is a significant decrease in average tempo between the two playlists and all connecting lines are aimed downward. By listening to the songs labeled as ouliers in the plot we can check if the plot has now correctly estimated the BPM of the tracks. For many tracks this is the case, however there remain some errors that had to be corrected by hand ("Dont panic", "Wicked Game"). The mean tempo_confidence of the originals is {} whilst that of the covers is {}, why are the covers much more difficult to estimate the tempo of? Lets take a closer look.
+**Examining the plot:**
 
-### A closer look at the outlier
+We now see there is a significant decrease in average tempo between the two playlists and all connecting lines are aimed downward. By listening to the songs labeled as ouliers in the plot we can check if the plot has now correctly estimated the BPM of the tracks. For many tracks this is the case, however there remain some errors that had to be corrected by hand ("Dont panic", "Wicked Game"). The mean tempo_confidence of the originals is 0.57 whilst that of the covers is 0.34, why are the covers much more difficult to estimate the tempo of? Lets take a closer look.
 
-```{r image_grobs, fig.show = "hold", out.width = "100%", fig.align = "default"}
+### A closer look at the outlier {data-commentary-width=450}
+
+```{r image_grobs, fig.show = "hold", out.width = "60%", fig.align = "default"}
 
 knitr::include_graphics("/Users/rori/Documents/UVA_3/Comp_Music/Plots/Nirvanamoretime.png")
 
@@ -347,7 +356,7 @@ knitr::include_graphics("/Users/rori/Documents/UVA_3/Comp_Music/Plots/BatmanTemp
 
 ***
 
-**Why is this an outlier?**
+**Why is "Something In The Way" an outlier?**
 
 This track was definitely not one of the outliers when it came to being fast or slow pased. However, the song is one of the few horizontal lines between the tempo of the covers and originals. I therefore decided to look ate the tempogram of both versions and see how the tempo has remained so similar. Which as we established in the previous plots, is unusual for trailercore music. 
 
@@ -355,7 +364,7 @@ This track was definitely not one of the outliers when it came to being fast or 
 
 The two plots show a tempogram for both the original as for the cover of Nirvana's "Something In The Way", the cover was used in the latest Batman starring Robert Pattinson. The tempogram plots the time in seconds along the x-axis and the estimated BPM of the song (per section) along the y-axis. The estimation of BPM in the original Nirvana version of the song has some difficulties as the song starts out due to it only being the strumming of a guitar and some vocals. The strumming consists of two long strokes and four short ones, this then repeats itself. We can see in the tempogram that the BPM estimation goes up and down according to the strumming pattern. The BPM levels out when the chorus hits and the drums fall in at about 55 seconds. A steady drum pattern is much easier to detect the BPM of due to the novelty function being energy sensitive. The drums fall away in the next verse and we can see that the tempogram again has difficulty assigning BPM to this part of the track. If we take the mean of the estimated tempo in the different parts we find about a 105 BPM for the song which is accurate. 
 
-If we look at the tempogram of the Batman version we see a similar intro to the Nirvana song: a vague line unable to get a grasp on the tempo. In fact, the song starts off almost the same as the original as the actual track by Nirvana is used to make the trailer version. The Nirvana track has been re-arranged and an orchestra plays around the verse and chorus. This also explains why the tempo is so similar in both songs as they kept the speed of the origional song as to not have to augment Kurt Cobain voice.  
+If we look at the tempogram of the Batman version we see a similar intro to the Nirvana song: a vague line unable to get a grasp on the tempo. In fact, the song starts off almost the same as the original as the actual track by Nirvana is used to make the trailer version. The Nirvana track has been re-arranged and an orchestra plays around the verse and chorus. This also explains why the tempo is so similar in both songs as they kept the speed of the original song as to not have to augment Kurt Cobain's voice.  
 
 
 ```{r prep for TEMPOGRAM WONDERWALL}
@@ -401,7 +410,7 @@ fig <- fig %>%
 Mode {.storyboard}
 ==============================
 
-### Have the songs been transposed to minor? 
+### Have the songs been transposed to minor? {data-commentary-width=450}
 ```{r mode piechart}
 test <- combined %>% mutate(mode = ifelse(mode == 0, "Minor", "Major"))
 
@@ -409,20 +418,217 @@ test <- combined %>% mutate(mode = ifelse(mode == 0, "Minor", "Major"))
 mode_piechart <- ggplot(test %>% group_by(kind) %>% count(mode_name), aes(x="", y= n, fill=mode_name)) +
   geom_bar(stat="identity", width=1) +
   coord_polar("y", start=0) +
+  scale_fill_brewer(palette="Set2") +
   facet_wrap(~fct_rev(kind)) +
-  labs(title = "A Rise in Minor Songs")
+  labs(title = "A Rise in Minor Mode", fill = "Mode")
+
+# print(test %>% group_by(id, kind, key_name) %>% count(mode))
+
 
 mode_piechart
 ```
 
 ***
 
-**The minor key**
-Often associated with the sadness of a song, and a possible contender  
+**What is the minor key?**
+
+Minor is one of many modes a song can be in, together with major they are the two most used modes in Western music. Musically, minor describes the use of notes, or rather the distances between notes in a scale. As minor is often associated with the sadness of a song, it makes a possible contender when it comes to explaining why the trailercore versions of songs are often described as "sad". 
 
 **Examining the plot**
 
-The pie chart is a little bold. What I'm trying to show is that there is an increase of the use of minor key in the movie trailer versions of the songs. However, it only applies to a relatively little percentage of the songs and doesn't explain the total amount of valence that is being lost. 
+The pie chart as visualization is a little bold, but it gets the job done. What I'm trying to see is if there is an increase of the use of minor key in the movie trailer versions of the songs. As shown in the pie chart, the movie trailer versions have more songs in the minor scale. Which would be a perfect explanation for the loss of valence. However, its a relatively little percentage of the playlist that have converged to minor, and the largest part of the trailercore tracks are still in major key! On top of that, there are instances where cover songs remain in the minor key but still feel sadder than their original. There have to be more ways of influencing the valence of a song than through changing its tonality. Lets take a closer look. 
+
+
+### How can a minor song still seem sadder? {data-commentary-width=450}
+```{r , include=FALSE}
+## Back to black
+tallis <-
+  get_tidy_audio_analysis("06kJw3NrXKRqFfpm7SNz4W?si=58b1f985f8424d4f") %>%
+  select(segments) %>%
+  unnest(segments) %>%
+  select(start, duration, pitches)
+
+## La Chapelle Royale
+chapelle <-
+  get_tidy_audio_analysis("1qPbGZqppFwLwcBC1JQ6Vr?si=b042ff17bc8243de") %>%
+  select(segments) %>%
+  unnest(segments) %>%
+  select(start, duration, pitches)
+
+plot_chapelle <- chapelle %>%
+  mutate(pitches = map(pitches, compmus_normalise, "euclidean")) %>%
+  compmus_gather_chroma() %>% 
+  ggplot(
+    aes(
+      x = start + duration / 2,
+      width = duration,
+      y = pitch_class,
+      fill = value
+    )
+  ) +
+  geom_tile() +
+  scale_x_continuous(
+    limits = c(0, 50)) +
+  labs(x = "Time (s)", y = NULL, fill = "Magnitude", title = "Wonderwall - Original F# Minor") +
+  theme_minimal() +
+  scale_fill_viridis_c()
+
+plot_tallis <- tallis %>%
+  mutate(pitches = map(pitches, compmus_normalise, "euclidean")) %>%
+  compmus_gather_chroma() %>% 
+  ggplot(
+    aes(
+      x = start + duration / 2,
+      width = duration,
+      y = pitch_class,
+      fill = value
+    )
+  ) +
+  geom_tile() +
+  scale_x_continuous(
+    limits = c(0, 50)) +
+  labs(x = "Time (s)", y = NULL, fill = "Magnitude", title = "Wonderwall - Trailercore F minor") +
+  theme_minimal() +
+  scale_fill_viridis_c()
+```
+```{r}
+(plot_chapelle / plot_tallis)
+```
+
+***
+
+**What is the chromagram?**
+
+The chromagram looks at the pitch of every segment in a song and plots this according to the 12 notes in an octave. Ths allows us to see how the mode or notes have been used throughout the song.
+
+**Examining the plot**
+
+I chose Wonderwall because Spotify showed that this song was one of the ones that changed to a minor mode in its covered version. First thing to notice is that the original labeling done by the Spotify API was incorrect. The song "Wonderwall" was not in a major mode in its original form but a minor mode, so the song never changed mode (however it did transpose from F# to F). This makes me believe that our previous plot showing the use of minor and major modes in the two playlists may not be accurate. We know now that the two songs are both in the minor key. So what makes the trailercore version sound so much sadder? Can we find a musical reason in the chromagram? 
+
+Well, yes! If you take a close look at how the two songs make use of the notes in their respective minor scales. We can see that the original sticks to full tone jumps (two semitones), whilst the cover lays a lot of emphasis on the semitone between C and C#. The semitone causes a lot of friction resulting in an uneasy feeling. Also, the location of the two semi tonal jumps in the scales respective to the ground tone define the mode that the listener perceives. By laying emphasis on the C C# jump there is also more emphasis on the fact that it is a minor scale. This could possibly explain why Spotify correctly labeled the mode of the cover but not the original, as the original avoids the use of the semitones in its mode which makes it harder to place which mode the song is in. Another way of using the mode of a song is through the chords that are played, so lets plot a chordogram!
+
+### Chordogram  {data-commentary-width=400}
+
+```{r}
+circshift <- function(v, n) {
+  if (n == 0) v else c(tail(v, n), head(v, -n))
+}
+
+#      C     C#    D     Eb    E     F     F#    G     Ab    A     Bb    B
+major_chord <-
+  c(   1,    0,    0,    0,    1,    0,    0,    1,    0,    0,    0,    0)
+minor_chord <-
+  c(   1,    0,    0,    1,    0,    0,    0,    1,    0,    0,    0,    0)
+seventh_chord <-
+  c(   1,    0,    0,    0,    1,    0,    0,    1,    0,    0,    1,    0)
+
+major_key <-
+  c(6.35, 2.23, 3.48, 2.33, 4.38, 4.09, 2.52, 5.19, 2.39, 3.66, 2.29, 2.88)
+minor_key <-
+  c(6.33, 2.68, 3.52, 5.38, 2.60, 3.53, 2.54, 4.75, 3.98, 2.69, 3.34, 3.17)
+
+chord_templates <-
+  tribble(
+    ~name, ~template,
+    "Gb:7", circshift(seventh_chord, 6),
+    "Gb:maj", circshift(major_chord, 6),
+    "Bb:min", circshift(minor_chord, 10),
+    "Db:maj", circshift(major_chord, 1),
+    "F:min", circshift(minor_chord, 5),
+    "Ab:7", circshift(seventh_chord, 8),
+    "Ab:maj", circshift(major_chord, 8),
+    "C:min", circshift(minor_chord, 0),
+    "Eb:7", circshift(seventh_chord, 3),
+    "Eb:maj", circshift(major_chord, 3),
+    "G:min", circshift(minor_chord, 7),
+    "Bb:7", circshift(seventh_chord, 10),
+    "Bb:maj", circshift(major_chord, 10),
+    "D:min", circshift(minor_chord, 2),
+    "F:7", circshift(seventh_chord, 5),
+    "F:maj", circshift(major_chord, 5),
+    "A:min", circshift(minor_chord, 9),
+    "C:7", circshift(seventh_chord, 0),
+    "C:maj", circshift(major_chord, 0),
+    "E:min", circshift(minor_chord, 4),
+    "G:7", circshift(seventh_chord, 7),
+    "G:maj", circshift(major_chord, 7),
+    "B:min", circshift(minor_chord, 11),
+    "D:7", circshift(seventh_chord, 2),
+    "D:maj", circshift(major_chord, 2),
+    "F#:min", circshift(minor_chord, 6),
+    "A:7", circshift(seventh_chord, 9),
+    "A:maj", circshift(major_chord, 9),
+    "C#:min", circshift(minor_chord, 1),
+    "E:7", circshift(seventh_chord, 4),
+    "E:maj", circshift(major_chord, 4),
+    "G#:min", circshift(minor_chord, 8),
+    "B:7", circshift(seventh_chord, 11),
+    "B:maj", circshift(major_chord, 11),
+    "D#:min", circshift(minor_chord, 3)
+  )
+
+key_templates <-
+  tribble(
+    ~name, ~template,
+    "Gb:maj", circshift(major_key, 6),
+    "Bb:min", circshift(minor_key, 10),
+    "Db:maj", circshift(major_key, 1),
+    "F:min", circshift(minor_key, 5),
+    "Ab:maj", circshift(major_key, 8),
+    "C:min", circshift(minor_key, 0),
+    "Eb:maj", circshift(major_key, 3),
+    "G:min", circshift(minor_key, 7),
+    "Bb:maj", circshift(major_key, 10),
+    "D:min", circshift(minor_key, 2),
+    "F:maj", circshift(major_key, 5),
+    "A:min", circshift(minor_key, 9),
+    "C:maj", circshift(major_key, 0),
+    "E:min", circshift(minor_key, 4),
+    "G:maj", circshift(major_key, 7),
+    "B:min", circshift(minor_key, 11),
+    "D:maj", circshift(major_key, 2),
+    "F#:min", circshift(minor_key, 6),
+    "A:maj", circshift(major_key, 9),
+    "C#:min", circshift(minor_key, 1),
+    "E:maj", circshift(major_key, 4),
+    "G#:min", circshift(minor_key, 8),
+    "B:maj", circshift(major_key, 11),
+    "D#:min", circshift(minor_key, 3)
+  )
+
+twenty_five <-
+  get_tidy_audio_analysis("1qPbGZqppFwLwcBC1JQ6Vr?si=b042ff17bc8243de") %>%
+  compmus_align(beats, segments) %>%
+  select(beats) %>%
+  unnest(beats) %>%
+  mutate(
+    pitches =
+      map(segments,
+        compmus_summarise, pitches,
+        method = "mean", norm = "manhattan"
+      )
+  )
+
+twenty_five %>% 
+  compmus_match_pitch_template(
+    chord_templates,         # Change to chord_templates if descired
+    method = "euclidean",  # Try different distance metrics
+    norm = "chebyshev"     # Try different norms
+  ) %>%
+  ggplot(
+    aes(x = start + duration / 2, width = duration, y = name, fill = "Magnitude")
+  ) +
+  geom_tile() +
+  scale_fill_viridis_c() +
+  scale_x_continuous(
+    limits = c(0, 50)) +
+  theme_minimal() +
+  labs(x = "Time (s)", y = "", Title = "Wonderwall - Trailercore version")
+```
+
+***
+
+The verse of the original Wonderwall song has these 4 chords in them: Em - G - D - Asus. As we can see in the plot, the cover version starts clearly with a F#m. Then the algorithm has some difficulty discerning the a maj an min chord but through listening we find it is infact maj. Same goes for the E chord. And then the chordogram gets really hard to read. A trip to chordify.net will show us that the last chord of the loop is a Bm. However, I believe we may be limited by the chordograms options, if you look at the x axis of the plot there is no sus chord represented there. As the original Wonderwall has a sus chord at the end of the loop, it may very well be that the algorithm is confused about the nature of the chord because it does not have the option to classify it correctly. In the case that the Bm is in fact the final chord of the loop it may give some insight as why this version of the song sounds sadder than the original. As the Bm chord would cause more friction. Another mistake in the  representation of the chordogram, is the fact that just like the chromagram it folds the y-axis so to fit all the chords once. This means that the information regarding the relative pitch of the cords is lost. If we look at the chordogram it looks as if the chords are rising. By listening to the track we hear that the chords gradually descend in pitch. A downward motive of chords is a valid explanation for any added feeling of sadness in the song. 
 
 
 
@@ -438,15 +644,11 @@ The pie chart is a little bold. What I'm trying to show is that there is an incr
 
 ```
 
+
 Timbre {.storyboard}
 ==============================
 ```{r Prepping, include=FALSE}
-library(tidyverse)
-library(tidymodels)
-library(ggdendro)
-library(heatmaply)
-library(spotifyr)
-library(compmus)
+
 
 
 get_conf_mat <- function(fit) {
@@ -592,6 +794,11 @@ portfolio <-
 
 ```
 
+```{r}
+
+```
+
+
 ```{r potfolio preprocessing, include=FALSE}
 portfolio_features <-
   portfolio %>%  # For your portfolio, change this to the name of your corpus.
@@ -615,6 +822,7 @@ portfolio_features <-
   mutate(pitches = map(pitches, compmus_normalise, "clr")) %>%
   mutate_at(vars(pitches, timbre), map, bind_rows) %>%
   unnest(cols = c(pitches, timbre))
+
 
 portfolio_recipe <-
   recipe(
@@ -680,17 +888,10 @@ portfolio_forest <-
 
 portfolio_forest %>% get_pr()
 ```
-### How can we differentiate between a movie trailer cover and its original?
 
-***
-
-**Intro to the section**
-
-We have already looked at the tempo and the mode of the songs in our two playlists but there remain many more features to be considered to describe the difference between movie trailer cover and its original. To make the best of the spotify API ive plotted a matrix containing all features 
-
-### The most important features
+### The most important features {data-commentary-width=450}
 ```{r PLOT the most important features}
-workflow() %>% 
+plot <- workflow() %>% 
   add_recipe(portfolio_recipe) %>% 
   add_model(forest_model) %>% 
   fit(portfolio_features) %>% 
@@ -702,32 +903,37 @@ workflow() %>%
   geom_col() + 
   coord_flip() +
   theme_minimal() +
-  labs(x = NULL, y = "Importance")
+  labs(x = NULL, y = "Importance", title="Trailercore - The Most Important Features")
+
+plot
 ```
 
 ***
 
-**What are features?**
+**Intro to the section**
 
-We are looking at two playlists throughout the research, each playlist is made up of songs that made up out of certain qualities
+We have already looked at the tempo and the mode of the songs in our two playlists but there remain many more features to be considered to describe the difference between trailercore and the original songs they cover. To make the best of the Spotify API I've plotted a matrix containing all features that the API distinguishes and organised them in order of best distinctive quality when it comes to discerning the two playlist. Therefore, these features are the most important when it comes to describing trailercore music. The ordered of importance we see in the plot is based on what a random forest classification algorithm with a k of 2 has found to be the most accurate feature to separate the two playlist. 
 
-** **
+**Examining the plot**
 
+As I would have guessed the most distinctive feature is valence. However, valence is quickly followed by a timbre feature called c02 that I had no way of knowing. These "c0..." timbre features are qualities that Spotify recognizes in the music but does not share the exact description of. Which is a shame, as we can see in the next plot using both valence as c02 allows us to very accurately discern the two playlists. Anther notable element in the plot is the how far down the tempo feature is on the matter of importance. As we had previously established, Spotify has read the tempo of the tracks wrong due to tempo octaves, and it actually is an incredibly useful feature to describe the difference in the two genres. Loudness is found at the very bottom of the plot, indicating that the tracks have an equal amount of variate in loudness, or that the playlists are just very similarly loud.
+
+### Tempo as a coefficient {data-commentary-width=450}
 ```{r PLOR using most important features to differentiate playlists}
-portfolio_features %>%
-  ggplot(aes(x = valence, y = c02, colour = playlist, size = energy)) +
-  geom_point(alpha = 0.8) +
-  scale_color_viridis_d() +
+plt1 <- portfolio_features %>%
+  ggplot(aes(x = valence, y = c02, colour = kind)) +
+  geom_point(alpha = 1, show.legend = FALSE) +
+  scale_colour_brewer(palette="Set2") +
   labs(
     x = "Valence",
     y = "Timbre Component 2",
     size = "Energy",
-    colour = "Playlist"
+    colour = "Playlist",
+    title = "c02 vs Valence"
   )
-```
 
-```{r PLOT plotting all features}
-portfolio_features %>%
+
+plt2 <- portfolio_features %>%
   mutate(
     timbre =
       map(
@@ -741,11 +947,375 @@ portfolio_features %>%
   compmus_gather_timbre() %>%
   ggplot(aes(x = basis, y = value, fill = kind)) +
   geom_violin() +
-  scale_fill_viridis_d() +
-  labs(x = "Spotify Timbre Coefficients", y = "", fill = "Playlist")
+  scale_fill_brewer(palette="Set2") +
+  labs(x = "Spotify Timbre Coefficients", y = "", fill = "Playlist", title="Comparing Timbre Coefficients")
 
+plt3 <- ggplot(combined, aes(x = kind, y = corr_tempo, fill = kind)) +
+  geom_violin(show.legend = FALSE) +
+  labs(
+    x = "Song Type",
+    y = "Tempo (BPM)",
+    title = "Tempo as coeffiecent",
+    fill = "Playlist"
+  )  +
+  scale_fill_brewer(palette="Set2") +
+  scale_x_discrete(limits = c("Original", "Movie Trailer Cover"))
+
+((plt1 | plt3 + plot_layout(guides = 'auto')) / plt2) + plot_layout(guides = 'collect')
 ```
 
 
-Structure {.storyboard}
+***
+
+**Tempo as a coefficient**
+
+In the violin plot on the bottom all the timbre coefficients for the two playlists are showed next to each other. As we could see in the previous slide, some of these coefficients are better at discerning the two playlist than others. I've plotted the corrected tempo next to all timbre coefficients to show how the shape indicates that it would be a valuable feature. Take for instance the coefficient c04, rated number 3 in importance. If we compare the shapes with the violin plot for the corrected tempo we find that the tempo plot has a lot less overlap. Which translates to it being a more usefull parameter to keep the two playlists apart. 
+
+In the top right we see how well the valence and c02 parameters combined could work to label the two playlists. However we still have the problem that we don't know what the timbre coefficients mean exactly. Lets take one of the outliers in the plot and see what we can make of its coeficients. 
+
+### Closer look at the Timbre Coefficients {data-commentary-width=450}
+```{r PLOT plotting all features}
+
+bzt <-
+  get_tidy_audio_analysis("0xzIMMcjNG3vliEX57oHa3?si=059b25d31bfb442b") %>% # Change URI.
+  compmus_align(bars, segments) %>%                     # Change `bars`
+  select(bars) %>%                                      #   in all three
+  unnest(bars) %>%                                      #   of these lines.
+  mutate(
+    pitches =
+      map(segments,
+        compmus_summarise, pitches,
+        method = "rms", norm = "euclidean"              # Change summary & norm.
+      )
+  ) %>%
+  mutate(
+    timbre =
+      map(segments,
+        compmus_summarise, timbre,
+        method = "rms", norm = "euclidean"              # Change summary & norm.
+      )
+  )
+
+bzt %>%
+  compmus_gather_timbre() %>%
+  ggplot(
+    aes(
+      x = start + duration / 2,
+      width = duration,
+      y = basis,
+      fill = value
+    )
+  ) +
+  geom_tile() +
+  labs(x = "Time (s)", y = NULL, fill = "Magnitude", title= "Heroes - Gang of Youth") +
+  scale_fill_viridis_c() +                              
+  theme_classic()
+```
+
+
+***
+
+**Heroes - Gang of Youths**
+
+I've chosen this song to get some insights into the timbre coefficients because its starts of with very little happening and gradually adds layers to the song, hence changing the timbre over time. As we can see from the plot, the emptiness at the start of the song strongly triggers the magnitude of the c07 coefficient. If you listen to the song you will hear only rhythmic, staccato like chords are played by string section whilst the singer occasionally accompanies them with a deep talking voice. Just before the 50 second mark a synth starts playing a melody line which triggers the c02 timbre coefficient. From off the 50 sec mark a drum kick joins the strings which shifts the magnitude being displayed to the c01 coefficient, i can image this is something to do with the lower register being active. As the song progresses the magnitude in the c02 becomes more intense, we can hear this happening as the initial drum gets doubled with an additional kick. Every time the melody is played by the synth the c02 lights up on the plot. 
+
+If we were to plot and listen to all of the song in the two playlists we might get a better idea of what the timbre coefficients entail. However, this is a lengthy and tedious endeavour that seems beyond the requirements for this research. 
+
+
+Structure (old corpus) {.storyboard}
 ==============================
+### The structure of pop music  {data-commentary-width=400}
+```{r}
+
+
+n1 <- get_tidy_audio_analysis("1YR7VB3xx85Iad2n3soyMb?si=1258f9bb8c124a29") %>%
+  compmus_align(sections, segments) %>%                     # Change `bars`
+  select(sections) %>%                                      #   in all three
+  unnest(sections) %>%                                      #   of these lines.
+  mutate(
+    pitches =
+      map(segments,
+          compmus_summarise, pitches,
+          method = "rms", norm = "euclidean"              # Change summary & norm.
+      )
+  ) %>%
+  mutate(
+    timbre =
+      map(segments,
+          compmus_summarise, timbre,
+          method = "rms", norm = "euclidean"              # Change summary & norm.
+      )
+  )
+
+n1 <-n1 %>%
+  compmus_self_similarity(timbre, "euclidean") %>% 
+  ggplot(
+    aes(
+      x = xstart + xduration / 2,
+      width = xduration,
+      y = ystart + yduration / 2,
+      height = yduration,
+      fill = d
+    )
+  ) +
+  geom_tile() +
+  coord_fixed() +
+  scale_fill_viridis_c(guide = "none", option = "inferno") +
+  theme_classic() +
+  theme(plot.title = element_text(size = 5), 
+        axis.title = element_text(size = 4),
+        axis.text = element_text(size = 7)
+        )+
+  labs(x = "Time (s)", y = NULL, fill = "Magnitude", title = "#1: Amsterdam - $hirak",)
+
+annotation <- data.frame(
+   x = c(95,138),
+   y = c(95,138),
+   label = c("Bridge", "Bridge")
+   )
+
+n1 <- n1 + geom_text(data=annotation, aes( x=x, y=y, label=label),
+           color="white", inherit.aes = FALSE,
+           size=2 , angle=0, fontface="bold" )
+
+n2 <- get_tidy_audio_analysis("6lgIi3ixBsr4cMt3r19yX9?si=ca328253debf4848") %>%
+  compmus_align(sections, segments) %>%                     # Change `bars`
+  select(sections) %>%                                      #   in all three
+  unnest(sections) %>%                                      #   of these lines.
+  mutate(
+    pitches =
+      map(segments,
+          compmus_summarise, pitches,
+          method = "rms", norm = "euclidean"              # Change summary & norm.
+      )
+  ) %>%
+  mutate(
+    timbre =
+      map(segments,
+          compmus_summarise, timbre,
+          method = "rms", norm = "euclidean"              # Change summary & norm.
+      )
+  )
+
+n2 <-n2 %>%
+  compmus_self_similarity(timbre, "euclidean") %>% 
+  ggplot(
+    aes(
+      x = xstart + xduration / 2,
+      width = xduration,
+      y = ystart + yduration / 2,
+      height = yduration,
+      fill = d
+    )
+  ) +
+  geom_tile() +
+  coord_fixed() +
+  scale_fill_viridis_c(guide = "none", option = "inferno") +
+  theme_classic() +
+  theme(plot.title = element_text(size = 5), 
+        axis.title = element_text(size = 4),
+        axis.text = element_text(size = 7)
+        )+
+  labs(x = "Time (s)", y = NULL, fill = "Magnitude", title = "#2: Dat Heb Jij Gedaan - MEAU",)
+
+n3 <- get_tidy_audio_analysis("63JrADDfrcjOaI6lyVkN3c?si=c79a65ca3f3d421e") %>%
+  compmus_align(sections, segments) %>%                     # Change `bars`
+  select(sections) %>%                                      #   in all three
+  unnest(sections) %>%                                      #   of these lines.
+  mutate(
+    pitches =
+      map(segments,
+          compmus_summarise, pitches,
+          method = "rms", norm = "euclidean"              # Change summary & norm.
+      )
+  ) %>%
+  mutate(
+    timbre =
+      map(segments,
+          compmus_summarise, timbre,
+          method = "rms", norm = "euclidean"              # Change summary & norm.
+      )
+  )
+
+n3 <-n3 %>%
+  compmus_self_similarity(timbre, "euclidean") %>% 
+  ggplot(
+    aes(
+      x = xstart + xduration / 2,
+      width = xduration,
+      y = ystart + yduration / 2,
+      height = yduration,
+      fill = d
+    )
+  ) +
+  geom_tile() +
+  coord_fixed() +
+  scale_fill_viridis_c(guide = "none", option = "inferno") +
+  theme_classic() +
+  theme(plot.title = element_text(size = 5), 
+        axis.title = element_text(size = 4),
+        axis.text = element_text(size = 7)
+        )+
+  labs(x = "Time (s)", y = NULL, fill = "Magnitude", title = "#3: Vluchtstrook - Kriss Kross Amsterdam",)
+
+n4 <- get_tidy_audio_analysis("3mafhqH8nGsvyZTN86IEOc?si=d68602bc50564294") %>%
+  compmus_align(sections, segments) %>%                     # Change `bars`
+  select(sections) %>%                                      #   in all three
+  unnest(sections) %>%                                      #   of these lines.
+  mutate(
+    pitches =
+      map(segments,
+          compmus_summarise, pitches,
+          method = "rms", norm = "euclidean"              # Change summary & norm.
+      )
+  ) %>%
+  mutate(
+    timbre =
+      map(segments,
+          compmus_summarise, timbre,
+          method = "rms", norm = "euclidean"              # Change summary & norm.
+      )
+  )
+
+n4 <- n4 %>%
+  compmus_self_similarity(timbre, "euclidean") %>% 
+  ggplot(
+    aes(
+      x = xstart + xduration / 2,
+      width = xduration,
+      y = ystart + yduration / 2,
+      height = yduration,
+      fill = d
+    )
+  ) +
+  geom_tile() +
+  coord_fixed() +
+  scale_fill_viridis_c(guide = "none", option = "inferno") +
+  theme_classic() +
+  theme(plot.title = element_text(size = 5), 
+        axis.title = element_text(size = 4),
+        axis.text = element_text(size = 7)
+        )+
+  labs(x = "Time (s)", y = NULL, fill = "Magnitude", title = "#4: Je Blik Richting Mij - Bankzitters")
+
+combined <- n1 + n2 + n3 + n4
+
+
+combined + plot_annotation(title = 'Timbre Self-Similarity Martrix of Dutch Top 4')
+
+```
+
+***
+
+**Explaining the plot:** 
+
+We see the self similarity matrix of the top four songs in the Dutch top 50 playlist on Spotify. Via Timbre we can compare the structure of the songs internally and find the sections that stand out the most. Also we can compare the four songs among each other. 
+
+**The black squares (structure)**
+
+A typical structure for a pop song is as follows: 
+intro, verse — chorus — verse — chorus — bridge — chorus, outro 
+
+If we look at the timbre based self-similarity matrices displayed in the plot we can make out the structure of the song along the black squares that form where the x and y axes meet. A larger black square means that part of the song (intro, chorus, verse, etc.) was consistent for a larger portion. This explains why the black squares are proportionate to each other as they are musically expressed as a multitude of "bars". For instance, in the Number 1 hit "Amsterdam", the into is 1 bar followed by a 4 bar chorus. As seen in the plot the black square representing the intro is 4 times smaller than the next.
+
+**The brightest squares (the outliers)** 
+
+Now that we have a way of interpreting the structure, lets take a look at the brightest squares. These indicate the magnitude with which the timbre differs from that particular part of the song to other parts of the song. If you take a glance at all four of the plots you might notice that all plots read the highest difference in timbre between the intro and the bridge. This can be explained by listening to the songs, the intro of all four songs is a toned down version of the verse or chorus. With toned down I mean elements are missing: the beat, the vocals or the chords. These elements are introduced after the intro creating a change in timbre. Now lets look at the bridge, recognizable in the plot by its presence as a cross in the top right of each matrix. The bridge functions as a structural change in the song, and is defined by the means to provide contrast. Therefore it isn't strange that the bridge is often the most outstanding structure. Notably, the highest contrast in three of the songs is found between the bridge and the intro. The only exeption is: "Je Blik Richting Mij", where the intro is obviously the most outstanding structure and the bridge seems to bear the closest resemblance to the intro. Another notable outlier is the song "Amsterdam" where there seems to be two bridges. The two outliers are plotted in a chroma self-similarity matrix on the next page so we can take a closer look at the pitch information to see if we can find a reason for their divergence. What we are interested in is to see if the bridge is also the most notable feature in these plots.
+
+### Can We Eleborate Structures With the Chromagram?  {data-commentary-width=400}
+
+```{r, include=FALSE}
+# amsterdam <- get_tidy_audio_analysis("1YR7VB3xx85Iad2n3soyMb?si=8c889e72e90a4ef8") %>%
+#   select(segments) %>%
+#   unnest(segments) %>%
+#   select(start, duration, pitches)
+# annotation <- data.frame(
+#    x = c(95,138),
+#    y = c(95,138),
+#    label = c("Bridge", "Bridge")
+#    )
+# amsterdam <- compmus_long_distance(
+#   amsterdam %>% mutate(pitches = map(pitches, compmus_normalise, "chebyshev")),
+#   amsterdam %>% mutate(pitches = map(pitches, compmus_normalise, "chebyshev")),
+#   feature = pitches,
+#   method = "euclidean"
+# ) %>%
+#   ggplot(
+#     aes(
+#       x = xstart + xduration / 2,
+#       width = xduration,
+#       y = ystart + yduration / 2,
+#       height = yduration,
+#       fill = d
+#     )
+#   ) +
+#   geom_tile() +
+#   coord_equal() +
+#   labs(x = NULL, y = NULL, title= "Amsterdam - $hirak") +
+#   theme_minimal() +
+#   scale_fill_viridis_c(guide = "none", option = "inferno")
+# amsterdam <- amsterdam + geom_text(data=annotation, aes( x=x, y=y, label=label),
+#            color="white", inherit.aes = FALSE,
+#            size=2 , angle=0, fontface="bold" )
+# amsterdam
+```
+```{r, include=FALSE}
+jeblik <- get_tidy_audio_analysis("3mafhqH8nGsvyZTN86IEOc?si=d68602bc50564294") %>%
+  select(segments) %>%
+  unnest(segments) %>%
+  select(start, duration, pitches)
+jeblik <- compmus_long_distance(
+  jeblik %>% mutate(pitches = map(pitches, compmus_normalise, "chebyshev")),
+  jeblik %>% mutate(pitches = map(pitches, compmus_normalise, "chebyshev")),
+  feature = pitches,
+  method = "euclidean"
+) %>%
+  ggplot(
+    aes(
+      x = xstart + xduration / 2,
+      width = xduration,
+      y = ystart + yduration / 2,
+      height = yduration,
+      fill = d
+    )
+  ) +
+  geom_tile() +
+  coord_equal() +
+  labs(x = NULL, y = NULL, title= "Je Blik Richting Mij") +
+  theme_minimal() +
+  scale_fill_viridis_c(guide = "none", option = "inferno")
+jeblik
+```
+
+```{r image_grobs sfd, fig.show = "hold", out.width = "60%", fig.align = "default"}
+
+knitr::include_graphics("/Users/rori/Documents/UVA_3/Comp_Music/Plots/JEBLIK.png")
+
+knitr::include_graphics("/Users/rori/Documents/UVA_3/Comp_Music/Plots/Amsterdam.png")
+
+
+```
+
+***
+
+**Explaining the plot:**
+
+If we look at the chromagram self-similarity matrix of both songs, it immediately becomes clear that there is a lot of repetition in both songs. In a chroma self-similarity matrix melodic lines throughout the song can be similar to one another. As a result, a path (or stripe) of high similarity running parallel to the main diagonal becomes visible in the self similarity matrix. In other words, repetitive properties correspond to path-like structures. The blocks that are visible in the plot correspond to entire parts of the music being similar. Due to both pop songs making heavy use of loops that are repeated throughout the entire song we see a lot of horizontal and vertical lines creating blocks. With the most notable change being, once again, the bridge. 
+
+
+
+Conclusion {.storyboard}
+==============================
+### What have I found?  {data-commentary-width=400}
+
+**Concluding the research**
+
+For my research question: "What defines the difference between an original song and its trailercore cover?", I have found a partial answer. Namely that, tempo, valence and the co2 timbre coefficient (whatever that may mean) are the best characteristics to discern the two genres. Of course, there is a lot more to it than that, but thanks to these features I have been able to make some of the descriptions of trailercore concrete. For instance, one of my sub questions: "Are movie trailer songs more sad then their original?" can be answered with a "generally speaking yes" due to the the plots of the valence and tempo features. However, I have found that the Spotify API still makes a lot of mistakes, which really jeopardizes the reliability of my findings. I have managed to correct most of the tempo labeling done by the Spotify algorithm, however I am aware that there still might be some errors in the data. Lastly, I'd like to state my disappointment in the vagueness of the timbre coefficients as Spotify has cloaked their properties in secrecy. Timbre is an interesting part of my research as most cover versions adapt the orchestral sounds known to movie theaters. Due to the lack of description provided by Spotify there is very little I can say about the coefficients musically. 
+
+***
+
+**References **
+
+Burgoyne, J.A. 2022. “Computational Musicology Course Materials.” University of Amsterdam.
+
+Spotify. 2022. “Spotify Web Api.” https://developer.spotify.com/documentation/web-api/.

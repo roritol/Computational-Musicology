@@ -1,6 +1,6 @@
 <style>
-<<<<<<< HEAD
-=======
+
+
 .navbar {
   background-color:crimson;
   border-color:black;
@@ -8,7 +8,6 @@
 .navbar-brand {
 color:black!important;
 }
->>>>>>> 61858cc26c97c33ab83308d390bc3e2791daa40e
 
 .navbar-inverse .navbar-nav > li > a:hover,
 .navbar-inverse .navbar-nav > li > a:focus {
@@ -30,9 +29,9 @@ color:black!important;
   border-color: orange;
 }
 
-<<<<<<< HEAD
+
 .sidebar { overflow: auto; }
-=======
+
 .chart-title {
     border-bottom: 1px solid #d7d7d7;
     color: #333333;
@@ -40,5 +39,5 @@ color:black!important;
     font-weight: 700;
     padding: 7px 10px 4px;
 }
->>>>>>> 61858cc26c97c33ab83308d390bc3e2791daa40e
+
 </style>
