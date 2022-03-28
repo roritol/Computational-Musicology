@@ -347,9 +347,9 @@ We now see there is a significant decrease in average tempo between the two play
 
 ```{r image_grobs, fig.show = "hold", out.width = "60%", fig.align = "default"}
 
-knitr::include_graphics("/Users/rori/Documents/UVA_3/Comp_Music/Plots/Nirvanamoretime.png")
+knitr::include_graphics("/Plots/Nirvanamoretime.png")
 
-knitr::include_graphics("/Users/rori/Documents/UVA_3/Comp_Music/Plots/BatmanTempo.png")
+knitr::include_graphics("/Plots/BatmanTempo.png")
 
 
 ```
@@ -508,7 +508,6 @@ I chose Wonderwall because Spotify showed that this song was one of the ones tha
 Well, yes! If you take a close look at how the two songs make use of the notes in their respective minor scales. We can see that the original sticks to full tone jumps (two semitones), whilst the cover lays a lot of emphasis on the semitone between C and C#. The semitone causes a lot of friction resulting in an uneasy feeling. Also, the location of the two semi tonal jumps in the scales respective to the ground tone define the mode that the listener perceives. By laying emphasis on the C C# jump there is also more emphasis on the fact that it is a minor scale. This could possibly explain why Spotify correctly labeled the mode of the cover but not the original, as the original avoids the use of the semitones in its mode which makes it harder to place which mode the song is in. Another way of using the mode of a song is through the chords that are played, so lets plot a chordogram!
 
 ### Chordogram  {data-commentary-width=400}
-
 ```{r}
 circshift <- function(v, n) {
   if (n == 0) v else c(tail(v, n), head(v, -n))
@@ -627,6 +626,8 @@ twenty_five %>%
 ```
 
 ***
+
+**Examining the plot**
 
 The verse of the original Wonderwall song has these 4 chords in them: Em - G - D - Asus. As we can see in the plot, the cover version starts clearly with a F#m. Then the algorithm has some difficulty discerning the a maj an min chord but through listening we find it is infact maj. Same goes for the E chord. And then the chordogram gets really hard to read. A trip to chordify.net will show us that the last chord of the loop is a Bm. However, I believe we may be limited by the chordograms options, if you look at the x axis of the plot there is no sus chord represented there. As the original Wonderwall has a sus chord at the end of the loop, it may very well be that the algorithm is confused about the nature of the chord because it does not have the option to classify it correctly. In the case that the Bm is in fact the final chord of the loop it may give some insight as why this version of the song sounds sadder than the original. As the Bm chord would cause more friction. Another mistake in the  representation of the chordogram, is the fact that just like the chromagram it folds the y-axis so to fit all the chords once. This means that the information regarding the relative pitch of the cords is lost. If we look at the chordogram it looks as if the chords are rising. By listening to the track we hear that the chords gradually descend in pitch. A downward motive of chords is a valid explanation for any added feeling of sadness in the song. 
 
@@ -1289,9 +1290,9 @@ jeblik
 
 ```{r image_grobs sfd, fig.show = "hold", out.width = "60%", fig.align = "default"}
 
-knitr::include_graphics("/Users/rori/Documents/UVA_3/Comp_Music/Plots/JEBLIK.png")
+knitr::include_graphics("/Plots/JEBLIK.png")
 
-knitr::include_graphics("/Users/rori/Documents/UVA_3/Comp_Music/Plots/Amsterdam.png")
+knitr::include_graphics("/Plots/Amsterdam.png")
 
 
 ```
