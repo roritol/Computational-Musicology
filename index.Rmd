@@ -347,9 +347,9 @@ We now see there is a significant decrease in average tempo between the two play
 
 ```{r image_grobs, fig.show = "hold", out.width = "60%", fig.align = "default"}
 
-knitr::include_graphics("/Plots/Nirvanamoretime.png")
+knitr::include_graphics("Plots/Nirvanamoretime.png")
 
-knitr::include_graphics("/Plots/BatmanTempo.png")
+knitr::include_graphics("Plots/BatmanTempo.png")
 
 
 ```
@@ -1290,9 +1290,9 @@ jeblik
 
 ```{r image_grobs sfd, fig.show = "hold", out.width = "60%", fig.align = "default"}
 
-knitr::include_graphics("/Plots/JEBLIK.png")
+knitr::include_graphics("Plots/JEBLIK.png")
 
-knitr::include_graphics("/Plots/Amsterdam.png")
+knitr::include_graphics("Plots/Amsterdam.png")
 
 
 ```
