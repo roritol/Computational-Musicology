@@ -12,4 +12,126 @@ output:
     self_contained: false
 ---
 
+```{r setup, include=FALSE}
+library(tidyverse)
+library(spotifyr)
+library(ggthemes)
+library(compmus)
+library(patchwork)
+library(thematic)
+library(shiny)
+library(plotly) 
+library(ggpp) 
+library(ggstatsplot)
+library(ggrepel)
+library(ggpmisc)
+library(RColorBrewer)
+library(tidyverse)
+library(tidymodels)
+library(ggdendro)
+library(heatmaply)
+library(spotifyr)
+library(compmus)
+
+
+myclientid <- 'd7e2a7e91dc44321ae9ebe078fdf78e6'
+myclientsecret <- '242e54cc07b6432db2ef073328971bbc'
+
+Sys.setenv(SPOTIFY_CLIENT_ID=myclientid)
+Sys.setenv(SPOTIFY_CLIENT_SECRET=myclientsecret)
+```
+
+
+```{r get the audio features of the playlists, include=FALSE}
+# Movie trailer covers - originals = 56quBtqjxzHDuphoB8GdP0?si=4f99dbd07e3c42de
+# Movie trailer cover = 4sonZikgqtbefZyJy9mMl0?si=0c89c8abbfb14dd2
+
+
+
+originals <-
+  get_playlist_audio_features("Movie Trailer Covers - Originals",
+    "56quBtqjxzHDuphoB8GdP0?si=4f99dbd07e3c42de"
+  ) %>%
+  add_audio_analysis()
+
+covers <-
+  get_playlist_audio_features("Movie Trailer Covers",
+    "4sonZikgqtbefZyJy9mMl0?si=0c89c8abbfb14dd2"
+  ) %>%
+  add_audio_analysis()
+
+```
+
+```{r create combined dataframe, include=FALSE}
+songnames <- c("Black Hole Sun",
+               "Something In The Way",                                             
+               "I've Got No Strings",                                              
+               "Crazy",                                                            
+               "Creep",                                                            
+               "Crazy In Love",                                     
+               "Survivor",                                                         
+               "Once Upon a Dream",
+               "I'd Love to Change the World",                     
+               "Paint It, Black",                                                  
+               "Born To Be Wild",                                                  
+               "Don't Panic",                                                      
+               "I Started A Joke",                                                 
+               "Sweet Dreams (Are Made of This)",                                  
+               "The Times They Are A-Changin'",                                    
+               "Back To Black",                                                    
+               "Wicked Game",                                                      
+               "Enjoy the Silence",                                                
+               "Never Tear Us Apart",                                              
+               "Smells Like Teen Spirit",                                          
+               "Come Together",                                  
+               "Wonderwall",                                                       
+               "Everybody Wants To Rule The World",                                
+               "Forever Young",                                                    
+               "Do You Realize??",                                                 
+               "California Dreamin",                             
+               "Heroes")
+
+# R add column before another column
+covers_withid <- covers %>%
+  add_column(id = songnames,
+             .before = "playlist_id")
+
+originals_withid <- originals %>%
+  add_column(id = songnames,
+             .before = "playlist_id")
+
+combined <-
+  bind_rows(originals_withid %>% mutate(kind = "Original"),
+            covers_withid %>% mutate(kind = "Movie Trailer Cover"))
+            
+
+```
+
+Intro {.storyboard}
+==============================
+
+### An introduction to Trailercore {data-commentary-width=450}
+
+**What is Trailercore?**
+
+Anyone who has watched a movie trailer in the past 10 years or so has most likely come across this phenomenon: "trailercore". A genre of music that describes the covers of well-known pop songs used in movie trailers. A trend that has been ongoing for more than a decade now, with the start of the trend marked by the use of Radiohead's "Creep" in the trailer of "The Social Network" (2010) and the trend still going strong with the use of the song "Something in the Way" by Nirvana in the latest Batman film (2022). Usually trailercore can be described as a slowed down sad and epic version of the original pop song, often the song is used to lay emphasis on lyrics that complement the plot of the film: "Creep" being a good example here, but also "Crazy" in the Bridman trailer or "Survivor" in Tomb Raider are candid examples. The use of these songs is quite clever as the viewer immediately has a sense of recognition that draws them to the trailer. So we will most likely be hearing a lot more of our favorite songs slowed down and sad as a trailercore cover in the future. 
+
+**But what really defines the difference between an original and a trailercore cover?**
+
+What I wish to accomplish in this exploratory data visualization is to find additional musical parameters to describe movie trailer covers (or trailercore) and to test the validity of descriptions like "slowed down", "sad" and "epic" that are often associated with the genre already. I will be using two self made Spotify playlists for this research, containing a section of 27 songs used in movie trailers, one with the originals and one containing the movie trailer covers. I will be examining these playlist through the spotify API for Tempo, Mode, Timbre and Structure. 
+
+
+<iframe style="border-radius:0px" src="https://open.spotify.com/embed/playlist/56quBtqjxzHDuphoB8GdP0?utm_source=generator" width="40%" height="80" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
+ 
+ 
+ <iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/56quBtqjxzHDuphoB8GdP0?utm_source=generator" width="40%" height="80" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
+ 
+***
+
+These are my hand crafted playlists, have a listen! 
+
+
+<iframe style="border-radius:0px" src="https://open.spotify.com/embed/playlist/56quBtqjxzHDuphoB8GdP0?utm_source=generator" width="40%" height="80" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
+
+
 
