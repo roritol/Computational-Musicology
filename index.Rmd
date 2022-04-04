@@ -7,7 +7,7 @@ output:
     logo: /Users/rori/Documents/UVA_3/Comp_Music/Computational-Musicology/logo.png
     orientation: columns
     vertical_layout: fill
-    # css: /Users/rori/Documents/UVA_3/Comp_Music/Computational-Musicology/Style.css
+    css: /Users/rori/Documents/UVA_3/Comp_Music/Computational-Musicology/Style.css
     theme: flatly
     self_contained: false
 ---
@@ -112,7 +112,7 @@ Intro {.storyboard}
 
 ### An introduction to Trailercore {data-commentary-width=450}
 
-**An introduction to Trailercore**
+**What is Trailercore?**
 
 Anyone who has watched a movie trailer in the past 10 years or so has most likely come across this phenomenon: "trailercore". A genre of music that describes the covers of well-known pop songs used in movie trailers. A trend that has been ongoing for more than a decade now, with the start of the trend marked by the use of Radiohead's "Creep" in the trailer of "The Social Network" (2010) and the trend still going strong with the use of the song "Something in the Way" by Nirvana in the latest Batman film (2022). Usually trailercore can be described as a slowed down sad and epic version of the original pop song, often the song is used to lay emphasis on lyrics that complement the plot of the film: "Creep" being a good example here, but also "Crazy" in the Bridman trailer or "Survivor" in Tomb Raider are candid examples. The use of these songs is quite clever as the viewer immediately has a sense of recognition that draws them to the trailer. So we will most likely be hearing a lot more of our favorite songs slowed down and sad as a trailercore cover in the future. 
 
@@ -125,9 +125,9 @@ What I wish to accomplish in this exploratory data visualization is to find addi
 These are my hand crafted playlists, have a listen! 
 
 
-<iframe src="https://open.spotify.com/embed/playlist/56quBtqjxzHDuphoB8GdP0?utm_source=generator&theme=0" width="100%" height="100" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
+<iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/56quBtqjxzHDuphoB8GdP0?utm_source=generator" width="40%" height="380" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
 
-<iframe src="https://open.spotify.com/embed/playlist/4sonZikgqtbefZyJy9mMl0?utm_source=generator&theme=0" width="100%" height="100" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
+<iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/4sonZikgqtbefZyJy9mMl0?utm_source=generator" width="40%" height="380" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
 
 
 ### Are movie trailer songs more sad then their original? {data-commentary-width=450}
@@ -509,6 +509,7 @@ Well, yes! If you take a close look at how the two songs make use of the notes i
 
 ### Chordogram  {data-commentary-width=400}
 ```{r}
+
 circshift <- function(v, n) {
   if (n == 0) v else c(tail(v, n), head(v, -n))
 }
@@ -615,14 +616,14 @@ twenty_five %>%
     norm = "chebyshev"     # Try different norms
   ) %>%
   ggplot(
-    aes(x = start + duration / 2, width = duration, y = name, fill = "Magnitude")
+    aes(x = start + duration / 2, width = duration, y = name, fill = d)
   ) +
   geom_tile() +
   scale_fill_viridis_c() +
   scale_x_continuous(
     limits = c(0, 50)) +
   theme_minimal() +
-  labs(x = "Time (s)", y = "", Title = "Wonderwall - Trailercore version")
+  labs(x = "Time (s)", y = "", Title = "Wonderwall - Trailercore version", fill = "Magnitude")
 ```
 
 ***
@@ -1023,7 +1024,7 @@ I've chosen this song to get some insights into the timbre coefficients because 
 If we were to plot and listen to all of the song in the two playlists we might get a better idea of what the timbre coefficients entail. However, this is a lengthy and tedious endeavour that seems beyond the requirements for this research. 
 
 
-Structure (old corpus) {.storyboard}
+Structure (Appendix) {.storyboard}
 ==============================
 ### The structure of pop music  {data-commentary-width=400}
 ```{r}

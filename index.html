@@ -7,7 +7,7 @@
 <meta name="generator" content="pandoc" />
 <meta name="author" content="Rory Tol" />
 
-<meta name="date" content="2022-02-26" />
+<meta name="date" content="2022-01-01" />
 
 
 <title>Computational Musicology Portfolio</title>
@@ -800,6 +800,7 @@ html, body {
 </style>
 
 
+<link rel="stylesheet" href="/Users/rori/Documents/UVA_3/Comp_Music/Computational-Musicology/Style.css" type="text/css" />
 
 </head>
 
@@ -821,7 +822,7 @@ html, body {
 <span class="navbar-brand">
   Computational Musicology Portfolio
   <span class="navbar-author">
-    Rory Tol &mdash; 2022-02-26
+    Rory Tol &mdash; 2022
     </span>
 </span>
 
@@ -2644,6 +2645,7 @@ window.FlexDashboardComponents.push({
 <div id="an-introduction-to-trailercore" class="section level3"
 data-commentary-width="450">
 <h3>An introduction to Trailercore</h3>
+<p><strong>What is Trailercore?</strong></p>
 <p>Anyone who has watched a movie trailer in the past 10 years or so has
 most likely come across this phenomenon: “trailercore”. A genre of music
 that describes the covers of well-known pop songs used in movie
@@ -2661,7 +2663,7 @@ recognition that draws them to the trailer. So we will most likely be
 hearing a lot more of our favorite songs slowed down and sad as a
 trailercore cover in the future.</p>
 <p><strong>But what really defines the difference between an original
-and a trailercore cover? </strong></p>
+and a trailercore cover?</strong></p>
 <p>What I wish to accomplish in this exploratory data visualization is
 to find additional musical parameters to describe movie trailer covers
 (or trailercore) and to test the validity of descriptions like “slowed
@@ -2673,9 +2675,9 @@ be examining these playlist through the spotify API for Tempo, Mode,
 Timbre and Structure.</p>
 <hr />
 <p>These are my hand crafted playlists, have a listen!</p>
-<iframe src="https://open.spotify.com/embed/playlist/56quBtqjxzHDuphoB8GdP0?utm_source=generator&amp;theme=0" width="10%" height="30" frameBorder="0" allowfullscreen allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture">
+<iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/56quBtqjxzHDuphoB8GdP0?utm_source=generator" width="50%" height="380" frameBorder="0" allowfullscreen allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture">
 </iframe>
-<iframe src="https://open.spotify.com/embed/playlist/4sonZikgqtbefZyJy9mMl0?utm_source=generator&amp;theme=0" width="10%" height="30" frameBorder="0" allowfullscreen allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture">
+<iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/4sonZikgqtbefZyJy9mMl0?utm_source=generator" width="50%" height="380" frameBorder="0" allowfullscreen allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture">
 </iframe>
 </div>
 <div id="are-movie-trailer-songs-more-sad-then-their-original"
@@ -2796,7 +2798,7 @@ data-commentary-width="450">
 <div class="knitr-options" data-fig-width="576" data-fig-height="460">
 
 </div>
-<p><img src="/Users/rori/Documents/UVA_3/Comp_Music/Plots/Nirvanamoretime.png" width="60%" data-figure-id=fig4 /><img src="/Users/rori/Documents/UVA_3/Comp_Music/Plots/BatmanTempo.png" width="60%" data-figure-id=fig4 /></p>
+<p><img src="Plots/Nirvanamoretime.png" width="60%" data-figure-id=fig4 /><img src="Plots/BatmanTempo.png" width="60%" data-figure-id=fig4 /></p>
 <hr />
 <p><strong>Why is “Something In The Way” an outlier?</strong></p>
 <p>This track was definitely not one of the outliers when it came to
@@ -2866,9 +2868,10 @@ pie chart, the movie trailer versions have more songs in the minor
 scale. Which would be a perfect explanation for the loss of valence.
 However, its a relatively little percentage of the playlist that have
 converged to minor, and the largest part of the trailercore tracks are
-still in major key! There have to be more ways of influencing the
-valence of a song through changing its tonality. Lets take a closer
-look.</p>
+still in major key! On top of that, there are instances where cover
+songs remain in the minor key but still feel sadder than their original.
+There have to be more ways of influencing the valence of a song than
+through changing its tonality. Lets take a closer look.</p>
 </div>
 <div id="how-can-a-minor-song-still-seem-sadder" class="section level3"
 data-commentary-width="450">
@@ -2904,7 +2907,8 @@ jump there is also more emphasis on the fact that it is a minor scale.
 This could possibly explain why Spotify correctly labeled the mode of
 the cover but not the original, as the original avoids the use of the
 semitones in its mode which makes it harder to place which mode the song
-is in.</p>
+is in. Another way of using the mode of a song is through the chords
+that are played, so lets plot a chordogram!</p>
 </div>
 <div id="chordogram" class="section level3" data-commentary-width="400">
 <h3>Chordogram</h3>
@@ -2913,6 +2917,28 @@ is in.</p>
 </div>
 <p><img src="index_files/figure-html/unnamed-chunk-4-1.png" width="576" data-figure-id=fig6 /></p>
 <hr />
+<p><strong>Examining the plot</strong></p>
+<p>The verse of the original Wonderwall song has these 4 chords in them:
+Em - G - D - Asus. As we can see in the plot, the cover version starts
+clearly with a F#m. Then the algorithm has some difficulty discerning
+the a maj an min chord but through listening we find it is infact maj.
+Same goes for the E chord. And then the chordogram gets really hard to
+read. A trip to chordify.net will show us that the last chord of the
+loop is a Bm. However, I believe we may be limited by the chordograms
+options, if you look at the x axis of the plot there is no sus chord
+represented there. As the original Wonderwall has a sus chord at the end
+of the loop, it may very well be that the algorithm is confused about
+the nature of the chord because it does not have the option to classify
+it correctly. In the case that the Bm is in fact the final chord of the
+loop it may give some insight as why this version of the song sounds
+sadder than the original. As the Bm chord would cause more friction.
+Another mistake in the representation of the chordogram, is the fact
+that just like the chromagram it folds the y-axis so to fit all the
+chords once. This means that the information regarding the relative
+pitch of the cords is lost. If we look at the chordogram it looks as if
+the chords are rising. By listening to the track we hear that the chords
+gradually descend in pitch. A downward motive of chords is a valid
+explanation for any added feeling of sadness in the song.</p>
 <div class="knitr-options" data-fig-width="576" data-fig-height="460">
 
 </div>
@@ -2958,17 +2984,30 @@ genres. Loudness is found at the very bottom of the plot, indicating
 that the tracks have an equal amount of variate in loudness, or that the
 playlists are just very similarly loud.</p>
 </div>
-<div id="the-most-important-features-1" class="section level3"
+<div id="tempo-as-a-coefficient" class="section level3"
 data-commentary-width="450">
-<h3>The most important features</h3>
+<h3>Tempo as a coefficient</h3>
 <div class="knitr-options" data-fig-width="576" data-fig-height="460">
 
 </div>
 <p><img src="index_files/figure-html/PLOR%20using%20most%20important%20features%20to%20differentiate%20playlists-1.png" width="576" data-figure-id=fig9 /></p>
 <hr />
-<p><strong>Timbre as a coefficient</strong></p>
-<p>I’ve plotted the corrected tempo next to all timbre coefficients to
-show how the shape indicates that it would be a valuable feature.</p>
+<p><strong>Tempo as a coefficient</strong></p>
+<p>In the violin plot on the bottom all the timbre coefficients for the
+two playlists are showed next to each other. As we could see in the
+previous slide, some of these coefficients are better at discerning the
+two playlist than others. I’ve plotted the corrected tempo next to all
+timbre coefficients to show how the shape indicates that it would be a
+valuable feature. Take for instance the coefficient c04, rated number 3
+in importance. If we compare the shapes with the violin plot for the
+corrected tempo we find that the tempo plot has a lot less overlap.
+Which translates to it being a more usefull parameter to keep the two
+playlists apart.</p>
+<p>In the top right we see how well the valence and c02 parameters
+combined could work to label the two playlists. However we still have
+the problem that we don’t know what the timbre coefficients mean
+exactly. Lets take one of the outliers in the plot and see what we can
+make of its coeficients.</p>
 </div>
 <div id="closer-look-at-the-timbre-coefficients" class="section level3"
 data-commentary-width="450">
@@ -2995,10 +3034,14 @@ progresses the magnitude in the c02 becomes more intense, we can hear
 this happening as the initial drum gets doubled with an additional kick.
 Every time the melody is played by the synth the c02 lights up on the
 plot.</p>
+<p>If we were to plot and listen to all of the song in the two playlists
+we might get a better idea of what the timbre coefficients entail.
+However, this is a lengthy and tedious endeavour that seems beyond the
+requirements for this research.</p>
 </div>
 </div>
-<div id="structure-old-corpus" class="section level1 storyboard">
-<h1 class="storyboard">Structure (old corpus)</h1>
+<div id="structure-appendix" class="section level1 storyboard">
+<h1 class="storyboard">Structure (Appendix)</h1>
 <div id="the-structure-of-pop-music" class="section level3"
 data-commentary-width="400">
 <h3>The structure of pop music</h3>
@@ -3046,21 +3089,63 @@ the closest resemblance to the intro. Another notable outlier is the
 song “Amsterdam” where there seems to be two bridges. The two outliers
 are plotted in a chroma self-similarity matrix on the next page so we
 can take a closer look at the pitch information to see if we can find a
-reason for their divergence.</p>
+reason for their divergence. What we are interested in is to see if the
+bridge is also the most notable feature in these plots.</p>
 </div>
 <div id="can-we-eleborate-structures-with-the-chromagram"
-class="section level3">
+class="section level3" data-commentary-width="400">
 <h3>Can We Eleborate Structures With the Chromagram?</h3>
 <div class="knitr-options" data-fig-width="576" data-fig-height="460">
 
 </div>
-<p><img src="/Users/rori/Documents/UVA_3/Comp_Music/Plots/JEBLIK.png" width="60%" data-figure-id=fig13 /><img src="/Users/rori/Documents/UVA_3/Comp_Music/Plots/AMsterdam.png" width="60%" data-figure-id=fig13 /></p>
+<p><img src="Plots/JEBLIK.png" width="60%" data-figure-id=fig13 /><img src="Plots/AMsterdam.png" width="60%" data-figure-id=fig13 /></p>
 <hr />
 <p><strong>Explaining the plot:</strong></p>
-<p>If we look at the chromagram self-similaritymatrix of both songs, it
-immediately becomes clear that there is a lot of repetition. What we are
-interested in is to see how the bridge</p>
+<p>If we look at the chromagram self-similarity matrix of both songs, it
+immediately becomes clear that there is a lot of repetition in both
+songs. In a chroma self-similarity matrix melodic lines throughout the
+song can be similar to one another. As a result, a path (or stripe) of
+high similarity running parallel to the main diagonal becomes visible in
+the self similarity matrix. In other words, repetitive properties
+correspond to path-like structures. The blocks that are visible in the
+plot correspond to entire parts of the music being similar. Due to both
+pop songs making heavy use of loops that are repeated throughout the
+entire song we see a lot of horizontal and vertical lines creating
+blocks. With the most notable change being, once again, the bridge.</p>
+</div>
+</div>
+<div id="conclusion" class="section level1 storyboard">
+<h1 class="storyboard">Conclusion</h1>
+<div id="what-have-i-found" class="section level3"
+data-commentary-width="400">
+<h3>What have I found?</h3>
+<p><strong>Concluding the research</strong></p>
+<p>For my research question: “What defines the difference between an
+original song and its trailercore cover?”, I have found a partial
+answer. Namely that, tempo, valence and the co2 timbre coefficient
+(whatever that may mean) are the best characteristics to discern the two
+genres. Of course, there is a lot more to it than that, but thanks to
+these features I have been able to make some of the descriptions of
+trailercore concrete. For instance, one of my sub questions: “Are movie
+trailer songs more sad then their original?” can be answered with a
+“generally speaking yes” due to the the plots of the valence and tempo
+features. However, I have found that the Spotify API still makes a lot
+of mistakes, which really jeopardizes the reliability of my findings. I
+have managed to correct most of the tempo labeling done by the Spotify
+algorithm, however I am aware that there still might be some errors in
+the data. Lastly, I’d like to state my disappointment in the vagueness
+of the timbre coefficients as Spotify has cloaked their properties in
+secrecy. Timbre is an interesting part of my research as most cover
+versions adapt the orchestral sounds known to movie theaters. Due to the
+lack of description provided by Spotify there is very little I can say
+about the coefficients musically.</p>
 <hr />
+<p><strong>References </strong></p>
+<p>Burgoyne, J.A. 2022. “Computational Musicology Course Materials.”
+University of Amsterdam.</p>
+<p>Spotify. 2022. “Spotify Web Api.” <a
+href="https://developer.spotify.com/documentation/web-api/"
+class="uri">https://developer.spotify.com/documentation/web-api/</a>.</p>
 </div>
 </div>
 
